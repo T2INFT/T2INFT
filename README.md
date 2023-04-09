@@ -22,7 +22,9 @@ Then the images would be converted into NFT products on Binance.
 
 
 ## Architecture
-![Example screenshot](./img/screenshot.png)
+<!-- ![Example screenshot](./img/screenshot.png) -->
+Image to-be-uploaded
+
 
 
 ## Models Used
@@ -54,11 +56,5 @@ Project is: _in progress_
 
 ## Acknowledgements
 Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
+- This project was inspired by HKU MSc
 
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
