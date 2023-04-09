@@ -58,5 +58,6 @@ Project is: _in progress_
 
 
 ## Acknowledgements
-- This project was inspired by HKU MSc
+- This project was inspired by HKU MSc Computer Science
+- Thanks to all team members
 
