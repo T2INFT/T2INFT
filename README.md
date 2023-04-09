@@ -8,7 +8,7 @@
 * [Models Used](#models-used)
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
-* [Usage](#usage)
+* [Sample Usage](#sample-usage)
 * [Project Status](#project-status)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
@@ -51,7 +51,10 @@ Project is: _in progress_
 
 
 ## Todo
-- task tbd
+- [ ] building skeleton of web app
+- [ ] choose stable diffusion model to use
+- [ ] preprocess NFT dataset
+- [ ] train StyleGAN2
 
 
 ## Acknowledgements
