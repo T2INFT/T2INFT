@@ -55,6 +55,5 @@ Project is: _in progress_
 
 
 ## Acknowledgements
-Give credit here.
 - This project was inspired by HKU MSc
 
