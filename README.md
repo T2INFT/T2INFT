@@ -53,7 +53,7 @@ Project is: _in progress_
 ## Todo
 - [ ] building skeleton of web app
 - [ ] choose stable diffusion model to use
-- [ ] preprocess NFT dataset
+- [x] preprocess NFT dataset
 - [ ] train StyleGAN2
 
 
