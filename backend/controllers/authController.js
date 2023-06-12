@@ -52,8 +52,8 @@ export const login = async (req, res) => {
 
         // return token
         const payload = { id: newUser.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE,
+        const token = jwt.sign(payload, config.jwt.secret, {
+            expiresIn: config.jwt.expire,
         });
 
         res.status(200).json({ success: true, data: token });
