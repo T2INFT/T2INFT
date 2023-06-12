@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
+import config from "../config/config.js";
 import User from "../models/user.js";
 
 export const register = async (req, res) => {
@@ -23,8 +24,8 @@ export const register = async (req, res) => {
         });
 
         const payload = { id: newUser.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRE,
+        const token = jwt.sign(payload, config.jwt.secret, {
+            expiresIn: config.jwt.expire,
         });
 
         res.status(200).json({ success: true, data: token });
