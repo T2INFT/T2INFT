@@ -28,6 +28,7 @@ Image to-be-uploaded
 ## Models Used
 - __HuggingFace__ Pretrained [Stable diffusion model](https://huggingface.co/runwayml/stable-diffusion-v1-5)
 - __Pytorch__ implementation [StyleGAN2-ADA](https://github.com/NVlabs/stylegan2-ada-pytorch) trained on public kaggle [NFT dataset](https://www.kaggle.com/datasets/vepnar/nft-art-dataset)
+- __ImageMixer__ https://github.com/kirigiricloud/stable-diffusion
 
 
 ## NFT website
@@ -48,7 +49,14 @@ Project is: _in progress_
 - [x] choose stable diffusion model to use
 - [x] preprocess NFT dataset
 - [x] train StyleGAN2
-- [ ] application basic functionalities
+- [x] application basic functionalities
+- [x] image-mixer: adjust the file to make it work in local
+- [x] back-end: wallet
+- [ ] front-end: profile
+- [ ] front-end: login/register
+- [ ] back-end: mint
+- [ ] Model: create usable Python script - Stable Diffusion
+- [ ] Model: create usable Python script - image-mixer
 
 
 ## Acknowledgements
