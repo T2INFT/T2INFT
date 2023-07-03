@@ -1,6 +1,6 @@
 # T2INFT
 > HKU MSc project about developing a web app which creates NFTs with use of T2I generative models <br /> <br />
-> Check out our [_Official website_](https://www.google.com).
+> Check out our [_Official website_](https://wp.cs.hku.hk/2022/msp22047).
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -8,7 +8,6 @@
 * [Models Used](#models-used)
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
-* [Sample Usage](#sample-usage)
 * [Project Status](#project-status)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
@@ -26,14 +25,13 @@ Then the images would be converted into NFT products on Binance.
 Image to-be-uploaded
 
 
-
 ## Models Used
-- __HuggingFace__ Pretrained [Stable diffusion model](https://www.google.com)
-- __Pytorch__ implementation [StyleGAN2](https://www.google.com) trained on public kaggle [NFT dataset](https://www.google.com)
+- __HuggingFace__ Pretrained [Stable diffusion model](https://huggingface.co/runwayml/stable-diffusion-v1-5)
+- __Pytorch__ implementation [StyleGAN2-ADA](https://github.com/NVlabs/stylegan2-ada-pytorch) trained on public kaggle [NFT dataset](https://www.kaggle.com/datasets/vepnar/nft-art-dataset)
 
 
 ## NFT website
-[Binance](https://www.google.com)
+[Ethereum](https://ethereum.org/)
 
 
 ## Web framework
@@ -41,20 +39,16 @@ __Frontend__ : Vue 3 + JavaScript <br /><br />
 __Backend__ : PHP + JSAPI
 
 
-## Sample Usage
-
-`code-tbd`
-
-
 ## Project Status
 Project is: _in progress_
 
 
 ## Todo
-- [ ] building skeleton of web app
-- [ ] choose stable diffusion model to use
+- [x] building skeleton of web app
+- [x] choose stable diffusion model to use
 - [x] preprocess NFT dataset
-- [ ] train StyleGAN2
+- [x] train StyleGAN2
+- [ ] application basic functionalities
 
 
 ## Acknowledgements

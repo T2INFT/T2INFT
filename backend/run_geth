@@ -1,0 +1,1 @@
+geth --http --http.corsdomain="*" --http.api web3,eth,debug,personal,net --vmdebug --datadir ./geth/ --dev console --ws --ws.api web3,eth,debug,personal,net --ws.origins "*"
