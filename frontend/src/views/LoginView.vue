@@ -34,7 +34,7 @@ export default {
       const form = loginFormRef.value;
       form.validate((valid) => {
         if (valid) {
-          axios.post('/api/login', loginForm.value)
+          axios.post('http://10.68.40.185:4000/auth/login', loginForm.value)
             .then(res => {
               console.log('login success:', res.data);
               // 登录成功，跳转到首页或其他页面

@@ -17,10 +17,10 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </header> -->
   <RouterView />
-  <nav>
+  <!-- <nav>
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/login">Login</RouterLink>
-  </nav>
+  </nav> -->
 </template>
 
 <!-- <style scoped>
