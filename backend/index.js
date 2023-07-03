@@ -24,3 +24,4 @@ sequelize.authenticate()
 app.post('/auth/register', registerValidate, authController.register);
 app.post('/auth/login', loginValidate, authController.login);
 app.post('/auth/me', checkAuth, authController.me);
+app.post('/users/profile', usersController.profile);
