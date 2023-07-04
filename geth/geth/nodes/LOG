@@ -16,3 +16,16 @@
 20:00:03.157315 version@stat F·[1] S·181B[181B] Sc·[0.25]
 20:00:03.233146 db@janitor F·3 G·0
 20:00:03.233165 db@open done T·95.856667ms
+=============== Jul 3, 2023 (HKT) ===============
+21:16:18.928408 db@close closing
+21:16:18.928674 db@close done T·265.166µs
+=============== Jul 3, 2023 (HKT) ===============
+21:16:54.605891 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+21:16:54.606084 version@stat F·[1] S·181B[181B] Sc·[0.25]
+21:16:54.606096 db@open opening
+21:16:54.606128 journal@recovery F·1
+21:16:54.606564 journal@recovery recovering @3
+21:16:54.625505 memdb@flush created L0@5 N·1 S·162B "loc..seq,v4":"loc..seq,v4"
+21:16:54.626084 version@stat F·[2] S·343B[343B] Sc·[0.50]
+21:16:54.702997 db@janitor F·4 G·0
+21:16:54.703020 db@open done T·96.917209ms

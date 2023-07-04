@@ -24,12 +24,12 @@ export const register = async (req, res) => {
             password: hashedPassword,
         });
 
-        const payload = { id: newUser.id };
+        const payload = { id: newUser.null }; // ?
         const token = jwt.sign(payload, config.jwt.secret, {
             expiresIn: config.jwt.expire,
         });
 
-        res.status(200).json({ success: true, data: token });
+        res.status(200).json({ success: true, data:  {token: token, userid: newUser.null} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -57,7 +57,7 @@ export const login = async (req, res) => {
             expiresIn: config.jwt.expire,
         });
 
-        res.status(200).json({ success: true, data: token });
+        res.status(200).json({ success: true, data: {token: token, userid: user.id} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }

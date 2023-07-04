@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
-  `txid` varchar(64) NOT NULL,
+  `txid` varchar(100) NOT NULL,
   `userid` int NOT NULL,
   `image_uri` varchar(200) NOT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1,4 +1,5 @@
 import Transaction from "../models/transaction.js";
+
 export const profile = async (req, res) => {
     try {
         const { userid } = req.body;
@@ -9,10 +10,9 @@ export const profile = async (req, res) => {
         //     return res.status(400).json({ message: "You have no record of any transactions." });
         // }
 
-
         // return info
         //const payload = { id: transaction.txid ,time: transaction.create_time, image: transaction.image_uri};
-        const payload ={info:  transaction};
+        const payload ={ info: transaction };
 
         res.status(200).json({ success: true, data: payload });
     } catch (error) {
