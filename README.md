@@ -9,6 +9,7 @@
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
 * [Project Status](#project-status)
+* [Model Installation](#Model Installation)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
 <!-- * [License](#license) -->
@@ -43,6 +44,11 @@ __Backend__ : PHP + JSAPI
 ## Project Status
 Project is: _in progress_
 
+## General Information
+'''
+cd stable-diffusion
+pip install -r requirements.txt
+'''
 
 ## Todo
 - [x] building skeleton of web app
@@ -52,11 +58,12 @@ Project is: _in progress_
 - [x] application basic functionalities
 - [x] image-mixer: adjust the file to make it work in local
 - [x] back-end: wallet
-- [ ] front-end: profile
-- [ ] front-end: login/register
-- [ ] back-end: mint
-- [ ] Model: create usable Python script - Stable Diffusion
-- [ ] Model: create usable Python script - image-mixer
+- [x] front-end: profile
+- [x] front-end: login/register
+- [x] back-end: mint
+- [x] Model: create usable Python script - Stable Diffusion
+- [x] Model: create usable Python script - image-mixer
+- [ ] Connect front-end and back-end
 
 
 ## Acknowledgements

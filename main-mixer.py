@@ -41,6 +41,8 @@ if len(sys.argv)>2:
 prev_path = os.getcwd()
 os.chdir(prev_path+'/stable-diffusion')
 #print(os.getcwd())
+if not os.path.isdir('output'):
+    os.mkdir('output')
 subprocess.run(["python", "scripts/mixer-test.py",user_name])
 os.chdir(prev_path)
 #print(os.getcwd())
