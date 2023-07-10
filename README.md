@@ -9,7 +9,7 @@
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
 * [Project Status](#project-status)
-* [Model Installation](#Model Installation)
+* [Model Installation](#model-installation)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
 <!-- * [License](#license) -->
@@ -44,11 +44,12 @@ __Backend__ : PHP + JSAPI
 ## Project Status
 Project is: _in progress_
 
-## General Information
-'''
+## Model Installation
+Python version >= 3.7
+```
 cd stable-diffusion
 pip install -r requirements.txt
-'''
+```
 
 ## Todo
 - [x] building skeleton of web app
