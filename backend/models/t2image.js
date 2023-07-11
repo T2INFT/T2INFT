@@ -3,10 +3,12 @@ import sequelize from "../db/db.js";
 
 const T2Image = sequelize.define("t2image", {
     imgid: {
-        type: DataTypes.STRING,
+        type: DataType.INTEGER,
         primaryKey: true
     },
     userid: DataTypes.INTEGER,
+    img_path: DataTypes.STRING,
+    promts: DataTypes.STRING,
     create_time: DataTypes.DATE,
 });
 

@@ -38,25 +38,45 @@ sequelize.authenticate()
         console.error("Unable to connect to the database:", error);
     })
 
+// register user, return {success: true, data: {token, userid}}
 // email, username, password
 app.post("/auth/register", registerValidate, authController.register);
+// login user, return {success: true, data: {token, userid}}
 // email, password
 app.post("/auth/login", loginValidate, authController.login);
+// logout user, return {success: true, data}
 // token
 app.post("/auth/me", checkAuth, authController.me);
+
+// get user info, return {success: true, data: user}
 // userid
 app.post("/users/profile", usersController.profile);
+// get user unminted images, return {success: true, data: [{image, imgid}]]}
+// userid
+app.post("/users/unminted", usersController.unminted);
+// get user minted images, return {success: true, data: [{image, imgid, txid}]}
+// userid
+app.post("/users/transactions", usersController.transactions);
 
+// get generated image, return {success: true, data: {image, imgid}}
 // userid, prompt
+app.post("/generate", modelController.generate);
+// get mixed image, return {success: true, data: {image, imgid}}
+// userid, imgid
+app.post("/mixer", modelController.mixer);
 
-
+// get user wallet, return {success: true, data: {address, privateKey}}
 // userid
 app.post("/user/createWallet", bcController.createWallet);
-// userid, privateKey, image(file), prompt
-app.post("/mint", upload.single("image"), bcController.mint);
+// mint image, return {success: true, data: {txid, tokenId, dataurl, datahttp}}
+// userid, privateKey, imgid
+app.post("/mint", bcController.mint);
+// charge user, return {success: true, data: {txid}}
 // userid, value
 app.post("/charge", bcController.charge);
+// get user balance, return {success: true, data: {balance}}
 // userid
 app.get("/getBalance", bcController.getBalance);
+// get user owned tokens, return {success: true, data: {[tokenid]]}}
 // userid
 app.get("/getOwnedTokens", bcController.getOwnedTokens);

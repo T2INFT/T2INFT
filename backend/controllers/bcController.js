@@ -51,11 +51,19 @@ export const mint = async (req, res) => {
     // private key communication need encryption?
 	const userid = req.body.userid;
 	const privateKey = req.body.privateKey;
-	const prompt = req.body.prompt;
+	const imgid = req.body.imgid;
 
     if (!userid) {
         return res.status(400).json({ message: "User ID is missing" });
     }
+
+	if (!privateKey) {
+		return res.status(400).json({ message: "Private key is missing" });
+	}
+
+	if (!imgid) {
+		return res.status(400).json({ message: "Image ID is missing" });
+	}
 
     const user = await User.findByPk(userid);
     if (!user) {
@@ -63,6 +71,13 @@ export const mint = async (req, res) => {
     }
 	
     const me = { address: user.wallet, privateKey: privateKey };
+
+	const t2image = await T2Image.findByPk(imgid);
+	if (!t2image) {
+		return res.status(400).json({ message: "Image not found" });
+	}
+	const prompt = t2image.prompts;
+
 	// nft storage
     try {
 		const image = await fileFromPath(req.file.path, req.file.mimetype);
@@ -71,7 +86,7 @@ export const mint = async (req, res) => {
 		}
 
         const metadata = await storage.store({
-			name: user.username,
+			name: user.username + " " + t2image.imgid,
 			description: prompt,
             image: image
         });
@@ -116,7 +131,7 @@ export const mint = async (req, res) => {
 		}
 
 		const txData = {
-			transactionHash: result.transactionHash,
+			txid: result.transactionHash,
 			tokenId: tokenId,
 			dataurl: dataurl,
 			datahttp: "https://ipfs.io/ipfs/" + dataurl.split("ipfs://")[1]

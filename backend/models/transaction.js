@@ -7,7 +7,7 @@ const Transaction = sequelize.define("transaction", {
         primaryKey: true
     },
     userid: DataTypes.INTEGER,
-    imgid: DataTypes.STRING,
+    imgid: DataTypes.INTEGER,
     image_uri: DataTypes.STRING,
     create_time: DataTypes.DATE,
 });
