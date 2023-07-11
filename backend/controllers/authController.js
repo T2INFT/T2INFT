@@ -6,6 +6,7 @@ import User from "../models/user.js";
 
 export const register = async (req, res) => {
     try {
+        console.log("------------Call register------------");
         console.log(req.body);
         const { username, email, password } = req.body;
 
@@ -37,6 +38,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
+        console.log("------------Call login------------");
         const { email, password } = req.body;
 
         // search user in db by email

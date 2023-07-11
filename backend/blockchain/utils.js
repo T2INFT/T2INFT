@@ -4,6 +4,7 @@ import path from "path";
 import main from "require-main-filename";
 
 const beroot = path.dirname(main()) + "/backend/";
+export default beroot;
 
 export const fileFromPath = async (filePath, ftype) => {
     const content = await fs.promises.readFile(beroot + filePath);

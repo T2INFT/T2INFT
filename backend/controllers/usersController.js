@@ -2,6 +2,7 @@ import Transaction from "../models/transaction.js";
 
 export const profile = async (req, res) => {
     try {
+        console.log("------------Call profile------------");
         const { userid } = req.body;
 
         // search transaction in db by email

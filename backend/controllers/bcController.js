@@ -12,6 +12,7 @@ const storage = new NFTStorage({ token: config.storage.api_key });
 
 export const createWallet = async (req, res) => {
     try {
+        console.log("------------Call createWallet------------");
         const userid = req.body.userid;
         if (!userid) {
             return res.status(400).json({ message: "User ID is missing" });
@@ -44,6 +45,7 @@ const contract = new web3.eth.Contract(t2i.abi, t2i.address);
 const coinbase = await web3.eth.getCoinbase();
 
 export const mint = async (req, res) => {
+	console.log("------------Call mint------------");
     let dataurl;
     // TODO: get user wallet from database, get private key from front-end
     // private key communication need encryption?
