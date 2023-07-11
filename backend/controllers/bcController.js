@@ -77,10 +77,11 @@ export const mint = async (req, res) => {
 		return res.status(400).json({ message: "Image not found" });
 	}
 	const prompt = t2image.prompts;
+	const imgpath = t2image.img_path;
 
 	// nft storage
     try {
-		const image = await fileFromPath(req.file.path, req.file.mimetype);
+		const image = await fileFromPath(imgpath, config.models.image_type);
 		if (!image) {
 			return res.status(400).json({ message: "Image upload failed" });
 		}

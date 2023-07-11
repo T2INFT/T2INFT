@@ -16,10 +16,11 @@ const config = {
     dev_chain: {
         coinbase: "0xa6ba8a56b86f1466031c06ae97dda2bb9ea50249"
     },
-    models_script: {
+    models: {
+        image_type: "image/png",
         main_sd: "main_sd.py",
         main_mixer: "main_mixer.py"
-    }
+    },
 };
 
 export default config;

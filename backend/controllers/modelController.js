@@ -17,7 +17,7 @@ export const generate = async (req, res) => {
             mode: 'text',
             args: ["[" + prompts + "]", userid]
         };
-        const pyresult = await PythonShell.run(root + config.models_script.main_sd, options);
+        const pyresult = await PythonShell.run(root + config.models.main_sd, options);
 
         const imgpath = pyresult[-1];
 
@@ -26,7 +26,7 @@ export const generate = async (req, res) => {
         const imgid = t2image.null; // ?
 
         // read image
-        const img = await fs.readFile(imgpath);
+        const img = fs.readFileSync(imgpath);
 
         res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
     } catch (error) {
@@ -45,7 +45,7 @@ export const mixer = async (req, res) => {
             mode: 'text',
             args: [userid]
         };
-        const pyresult = await PythonShell.run(root + config.models_script.main_mixer, options);
+        const pyresult = await PythonShell.run(root + config.models.main_mixer, options);
 
         const imgpath = pyresult[-1];
 
@@ -56,7 +56,7 @@ export const mixer = async (req, res) => {
         const imgid = t2image.null; // ?
 
         // read image
-        const img = await fs.readFile(imgpath);
+        const img = fs.readFileSync(imgpath);
 
         res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
     } catch (error) {
