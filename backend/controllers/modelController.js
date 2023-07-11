@@ -1,7 +1,10 @@
 import { PythonShell } from "python-shell";
+import path from "path";
 
-import beroot from "../blockchain/utils.js";
 import config from "../config/config.js";
+
+const root = path.dirname(main()) + "/";
+
 
 // generate image
 export const stableDiffusion = async (req, res) => {
@@ -14,7 +17,7 @@ export const stableDiffusion = async (req, res) => {
             mode: 'text',
             args: [prompts, userid]
         };
-        const pyresult = await PythonShell.run(beroot + config.models_script.main_sd, options);
+        const pyresult = await PythonShell.run(root + config.models_script.main_sd, options);
 
         // TODO:
         // get imgid then save to db
@@ -37,7 +40,7 @@ export const mixer = async (req, res) => {
             mode: 'text',
             args: [userid]
         };
-        const pyresult = await PythonShell.run(beroot + config.models_script.main_mixer, options);
+        const pyresult = await PythonShell.run(root + config.models_script.main_mixer, options);
 
         // TODO:
         // get imgid then save to db

@@ -10,4 +10,6 @@ const T2Image = sequelize.define("t2image", {
     create_time: DataTypes.DATE,
 });
 
+T2Image.belongsTo(User, { foreignKey: "userid" });
+
 export default T2Image;

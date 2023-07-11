@@ -12,4 +12,7 @@ const Transaction = sequelize.define("transaction", {
     create_time: DataTypes.DATE,
 });
 
+Transaction.belongsTo(User, { foreignKey: "userid" });
+Transaction.belongsTo(T2Image, { foreignKey: "imgid" });
+
 export default Transaction;

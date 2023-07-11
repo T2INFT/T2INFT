@@ -18,7 +18,7 @@
 ## General Information
 - This study aims to work out a practical web application that meets potential NFT buyers' requirements in making their customized NFTs, 
 which uses the Generative model to convert text description to semantically consistent NFT style images. 
-Then the images would be converted into NFT products on Binance.
+Then the images would be converted into NFT products on Ethereum.
 
 
 ## Architecture
@@ -38,7 +38,7 @@ Image to-be-uploaded
 
 ## Web framework
 __Frontend__ : Vue 3 + JavaScript <br /><br />
-__Backend__ : PHP + JSAPI
+__Backend__ : Nodejs + MySQL
 
 
 ## Project Status
