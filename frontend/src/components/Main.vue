@@ -4,7 +4,7 @@
     <img src="../assets/defaultImg.png" class="image" />
 </el-card>
 </template>
-<style>
+<style scoped>
 .el-card {
     margin: 5%;
     margin-top: 0;
