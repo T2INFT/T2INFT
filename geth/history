@@ -1,0 +1,20 @@
+web3.eth.accounts
+web3.eth.wallet
+web3.eth
+web3.eth.accounts
+coinbase
+web3.eth.accounts
+eth.sendTransaction
+web3.eth.sendTransaction({
+from: web3.eth.coinbase, 
+to: toAddress, 
+value: web3.utils.toWei(value, "ether")
+})
+web3.eth.sendTransaction
+web3.eth.coinbase
+eth.wallet
+web3.wallet
+web3.eth.wallets
+web3.eth.wallet
+web3.eth.accounts.wallet
+web3.eth.accounts

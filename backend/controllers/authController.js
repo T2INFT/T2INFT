@@ -6,6 +6,8 @@ import User from "../models/user.js";
 
 export const register = async (req, res) => {
     try {
+        console.log("------------Call register------------");
+        console.log(req.body);
         const { username, email, password } = req.body;
 
         const salt = await bcrypt.genSalt(10);
@@ -14,7 +16,7 @@ export const register = async (req, res) => {
         // validate if email is unique
         const emailExists = await User.findOne({ where: { email } });
         if (emailExists) {
-            return res.status(400).json({ message: "The email already taken", field: "email" });
+            return res.status(400).json({ success: false, error: "The email already taken" });
         }
 
         const newUser = await User.create({
@@ -23,12 +25,12 @@ export const register = async (req, res) => {
             password: hashedPassword,
         });
 
-        const payload = { id: newUser.id };
+        const payload = { id: newUser.null }; // ?
         const token = jwt.sign(payload, config.jwt.secret, {
             expiresIn: config.jwt.expire,
         });
 
-        res.status(200).json({ success: true, data: token });
+        res.status(200).json({ success: true, data:  {token: token, userid: newUser.null} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -36,6 +38,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
+        console.log("------------Call login------------");
         const { email, password } = req.body;
 
         // search user in db by email
@@ -51,12 +54,12 @@ export const login = async (req, res) => {
         }
 
         // return token
-        const payload = { id: newUser.id };
+        const payload = { id: user.id };
         const token = jwt.sign(payload, config.jwt.secret, {
             expiresIn: config.jwt.expire,
         });
 
-        res.status(200).json({ success: true, data: token });
+        res.status(200).json({ success: true, data: {token: token, userid: user.id} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
