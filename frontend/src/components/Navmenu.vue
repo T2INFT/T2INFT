@@ -2,7 +2,7 @@
   <el-row align="middle" class="row-container">
     <el-col :span="2">
       <div class="logo-container">
-        <img src="../assets/logo.svg" alt="Logo">
+        <img src="../assets/logo4.png" alt="Logo">
       </div> 
       <!-- <el-image src="../assets/logo.svg" :fit="fit"></el-image> -->
       <!-- t2inft -->
@@ -45,24 +45,25 @@
         <el-dropdown-menu slot="dropdown" >
         <el-dropdown-item icon="el-icon-food" @click="loginVisible=true;">
           Log in 
-          <!-- <Login :loginVisible="loginVisible"/> -->
         </el-dropdown-item>
         <el-dropdown-item icon="el-icon-burger" @click="signupVisible = true;">
           Sign up
-          <Signup :signupVisible="signupVisible"/>
         </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
   </el-row>
   <el-divider style="margin: 0;"></el-divider>
+  <!-- <Login v-model:loginVisible="loginVisible" v-model:signupVisible="signupVisible"/>
+  <Signup v-model:signupVisible="signupVisible" v-model:loginVisible="loginVisible"/> -->
+  <SignupLogin v-model:signupVisible="signupVisible" v-model:loginVisible="loginVisible" />
 </template>
 
 <script setup>
   import { ref } from 'vue'
-  import Signup from './Signup.vue'
-  import Login from './Login.vue'
-
+  // import Signup from './Signup.vue'
+  // import Login from './Login.vue'
+  import SignupLogin from './SignupLogin.vue';
   const logState = ref(false)
   const signupVisible = ref(false)
   const loginVisible = ref(false)
@@ -86,7 +87,7 @@
     }
   }
 </script> -->
-<style>
+<style scoped>
 .custom-icon{
   font-size: 40px;
   color:  #909399;
@@ -110,9 +111,5 @@ img {
 }
 .el-popover {
   min-width: auto !important;
-}
-.el-link {
-  display: block;
-  /* width: 100%; */
 }
 </style>
