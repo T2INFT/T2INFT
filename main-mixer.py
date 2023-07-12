@@ -29,15 +29,17 @@ else:
     print('outputs folder does not exist')
     os.mkdir(user_outdir)
 
-if len(sys.argv)>2:
-    prompt = sys.argv[2]
-    working_dir = os.getcwd()
-    sd_in_dir = os.path.join(working_dir,'sd-outputs',user_name)
-    sd_image_in = os.path.join(sd_in_dir,'sd-'+user_name+'-'+str(find_last(sd_in_dir)-1)+'.png')
-    sd_image_out = os.path.join(working_dir,'stable-diffusion','input','input.png')
-    shutil.copyfile(sd_image_in, sd_image_out)
-    if os.path.isfile(sd_image_in):
-        print('successfully copied image')
+#if len(sys.argv)>2:
+    #prompt = sys.argv[2]
+working_dir = os.getcwd()
+sd_in_dir = os.path.join(working_dir,'sd-outputs',user_name)
+sd_image_in = os.path.join(sd_in_dir,'sd-'+user_name+'-'+str(find_last(sd_in_dir)-1)+'.png')
+sd_image_out = os.path.join(working_dir,'stable-diffusion','input','input.png')
+shutil.copyfile(sd_image_in, sd_image_out)
+if os.path.isfile(sd_image_in):
+    print('successfully copied image')
+else:
+    print(user_name+' image not found')
 prev_path = os.getcwd()
 os.chdir(prev_path+'/stable-diffusion')
 #print(os.getcwd())
@@ -50,16 +52,10 @@ image_out = os.getcwd()+'/stable-diffusion/output/'+user_name+'.png'
 mixer_out_dir = os.path.join(os.getcwd(),'outputs',user_name)
 image_new_out = os.path.join(mixer_out_dir,user_name+'-'+str(find_last(mixer_out_dir))+'.png')
 print(image_out)
-f = open("mixer-log.txt", "w")
 if os.path.isfile(image_out):
     print('successfully transfered image')
+    print(image_new_out)
     os.rename(image_out, image_new_out)
-    ##save out_path in a text file
-    f.write(image_new_out)
-    
 else:
     print('image not found')
-
-f.close()
-
     

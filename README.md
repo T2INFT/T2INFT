@@ -10,6 +10,7 @@
 * [Web framework](#web-framework)
 * [Project Status](#project-status)
 * [Model Installation](#model-installation)
+* [Sample Usage](#sample-usage)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
 <!-- * [License](#license) -->
@@ -49,6 +50,18 @@ Python version >= 3.7
 ```
 cd stable-diffusion
 pip install -r requirements.txt
+```
+
+## Sample Usage
+```
+python main-sd.py prompt user_name
+python main-mixer.py user_name
+```
+prompt: String, text requirment
+user_name: String, provided user name for registered user
+```
+python main-sd.py 'a photo of an astronaut riding a horse on mars' test_user
+python main-mixer.py test_user
 ```
 
 ## Todo
