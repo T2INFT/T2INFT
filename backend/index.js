@@ -1,6 +1,5 @@
 
 import express from "express";
-import multer from "multer";
 import sequelize from "./db/db.js";
 
 import { registerValidate, loginValidate } from "./validations/auth.js";
@@ -9,6 +8,7 @@ import * as authController from "./controllers/authController.js";
 import * as usersController from "./controllers/usersController.js";
 import * as bcController from "./controllers/bcController.js";
 import * as modelController from "./controllers/modelController.js";
+import "./models/modelRelation.js";
 
 const app = express();
 app.use(function (req, res, next) {
@@ -23,8 +23,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.json());
-
-var upload = multer({ dest: "upload/"});
 
 const PORT = process.env.PORT || 4000;
 

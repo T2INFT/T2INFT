@@ -1,5 +1,6 @@
 import { PythonShell } from "python-shell";
 import path from "path";
+import main from "require-main-filename";
 
 import config from "../config/config.js";
 import T2Image from "../models/t2image.js";
