@@ -9,7 +9,7 @@ const root = path.dirname(main()) + "/";
 // generate image
 export const generate = async (req, res) => {
     try {
-        console.log("------------Call stableDiffusion------------");
+        console.log("------------Call generate------------");
         const userid = req.body.userid;
         const prompts = req.body.prompts.split(" ").toString();
 

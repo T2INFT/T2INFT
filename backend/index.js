@@ -38,45 +38,84 @@ sequelize.authenticate()
         console.error("Unable to connect to the database:", error);
     })
 
-// register user, return {success: true, data: {token, userid}}
-// email, username, password
+/** 
+ * register user
+ * params: email, username, password 
+ * return: {success: true, data: {token, userid}}
+ */ 
 app.post("/auth/register", registerValidate, authController.register);
-// login user, return {success: true, data: {token, userid}}
-// email, password
+/**
+ * login user
+ * params: email, password
+ * return: {success: true, data: {token, userid}}
+ */
 app.post("/auth/login", loginValidate, authController.login);
-// logout user, return {success: true, data}
-// token
+/**
+ * logout user
+ * params: token
+ * return: {success: true, data}
+ */
 app.post("/auth/me", checkAuth, authController.me);
 
-// get user info, return {success: true, data: user}
-// userid
+/**
+ * get user info
+ * params: userid
+ * return: {success: true, data: user}
+ */
 app.post("/users/profile", usersController.profile);
-// get user unminted images, return {success: true, data: [{image, imgid}]]}
-// userid
+/**
+ * get user unminted images
+ * params: userid
+ * return: {success: true, data: [{image, imgid}]]}
+ */
 app.post("/users/unminted", usersController.unminted);
-// get user minted images, return {success: true, data: [{image, imgid, txid}]}
-// userid
+/**
+ * get user minted images
+ * params: userid
+ * return: {success: true, data: [{image, imgid, txid}]}
+ */
 app.post("/users/transactions", usersController.transactions);
+/**
+ * get user wallet
+ * params: userid
+ * return: {success: true, data: {address, privateKey}}
+ */
+app.post("/bc/createWallet", bcController.createWallet);
 
-// get generated image, return {success: true, data: {image, imgid}}
-// userid, prompt
-app.post("/generate", modelController.generate);
-// get mixed image, return {success: true, data: {image, imgid}}
-// userid, imgid
-app.post("/mixer", modelController.mixer);
+/**
+ * get generated image
+ * params: userid, prompt
+ * return: {success: true, data: {image, imgid}}
+ */
+app.post("/model/generate", modelController.generate);
+/**
+ * get generated image
+ * params: userid, prompt
+ * return: {success: true, data: {image, imgid}}
+ */
+app.post("/model/mixer", modelController.mixer);
 
-// get user wallet, return {success: true, data: {address, privateKey}}
-// userid
-app.post("/user/createWallet", bcController.createWallet);
-// mint image, return {success: true, data: {txid, tokenId, dataurl, datahttp}}
-// userid, privateKey, imgid
-app.post("/mint", bcController.mint);
-// charge user, return {success: true, data: {txid}}
-// userid, value
-app.post("/charge", bcController.charge);
-// get user balance, return {success: true, data: {balance}}
-// userid
-app.get("/getBalance", bcController.getBalance);
-// get user owned tokens, return {success: true, data: {[tokenid]]}}
-// userid
-app.get("/getOwnedTokens", bcController.getOwnedTokens);
+/**
+ * mint image
+ * params: userid, privateKey, imgid
+ * return: {success: true, data: {txid, tokenId, dataurl, datahttp}}
+ */
+app.post("/bc/mint", bcController.mint);
+/**
+ * charge user
+ * params: userid, value
+ * return: {success: true, data: {txid}}
+ */
+app.post("/bc/charge", bcController.charge);
+/**
+ * get user balance
+ * params: userid
+ * return: {success: true, data: {balance}}
+ */
+app.get("/bc/getBalance", bcController.getBalance);
+/**
+ * get user owned tokens
+ * param: userid
+ * return: {success: true, data: {[tokenid]]}}
+ */
+app.get("/bc/getOwnedTokens", bcController.getOwnedTokens);
