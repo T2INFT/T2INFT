@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import config from "../config/config.js";
 import User from "../models/user.js";
 
-import { createWallet } from "./bcController.js";
+import { createWallet, charge } from "./bcController.js";
 
 function revisedRandUsername() {
     return Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substring(2, 10);
@@ -41,7 +41,8 @@ export const register = async (req, res) => {
 
         // create wallet
         const wallet = await createWallet(newUser.null);
-        console.log(wallet);
+        // auto charge
+        const txData = await charge(wallet.address, 20);
 
         res.status(200).json({ success: true, data: {token: token, userid: newUser.null, wallet: wallet} });
     } catch (error) {

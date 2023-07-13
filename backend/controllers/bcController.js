@@ -136,17 +136,9 @@ export const mint = async (req, res) => {
 };
 
 
-export const charge = async (req, res) => {
+export const charge = async (address, value) => {
 	try {
-		const userid = req.body.userid;
-		const value = req.body.value;
-
-		const user = await User.findByPk(userid);
-		if (!user) {
-			return res.status(400).json({ message: "User not found" });
-		}
-
-		const toAddress = user.wallet;
+		const toAddress = address;
 
 		var result = await web3.eth.sendTransaction({
 			from: coinbase, 
@@ -156,17 +148,17 @@ export const charge = async (req, res) => {
 		// console.log(result);
 
 		if (!result) {
-			return res.status(500).json({ success: false, error: "Transaction failed" });
+			throw "Transaction failed";
 		}
 
 		var txData = {
 			txid: result.transactionHash,
 		};
 
-		return res.status(200).json({ success: true, data: txData });
+		return txData;
 	}
 	catch (error) {
-		res.status(500).json({ success: false, error: error.message });
+		throw error;
 	}
 };
 

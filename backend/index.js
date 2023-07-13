@@ -100,12 +100,6 @@ app.post("/model/grade", modelController.grade);
  */
 app.post("/bc/mint", bcController.mint);
 /**
- * charge user
- * params: userid, value
- * return: {success: true, data: {txid}}
- */
-app.post("/bc/charge", bcController.charge);
-/**
  * get user balance
  * params: userid
  * return: {success: true, data: {balance}}
