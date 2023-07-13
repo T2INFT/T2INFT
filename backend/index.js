@@ -92,6 +92,12 @@ app.post("/model/generate", modelController.generate);
  * return: {success: true, data: {image, imgid}}
  */
 app.post("/model/mixer", modelController.mixer);
+/**
+ * grade image
+ * params: imgid, grade
+ * return: {success: true, data}
+ */
+app.post("/model/grade", modelController.grade);
 
 /**
  * mint image
