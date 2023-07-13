@@ -14,8 +14,8 @@ def find_last(source_dir):
     return index
 
 if len(sys.argv) > 1:
-    prompt = sys.argv[1]
-    prompt = ' '.join(prompt)
+    prompt = str(sys.argv[1])
+    #prompt = ' '.join(prompt)
     user_name = sys.argv[2]
 else:
     prompt = "a photo of an astronaut riding a horse on mars"
@@ -26,14 +26,14 @@ else:
 if os.path.isdir('sd-outputs'):
     print('sd-outputs folder exists')
 else:
-    print('sd-outputs folder does not exist')
+    print('sd-outputs folder does not exist, creat now')
     os.mkdir('sd-outputs')
 
 user_outdir = 'sd-outputs/' + user_name
 if os.path.isdir(user_outdir):
-    print('sd-outputs folder exists')
+    print(user_name + ' sd-outputs folder exists')
 else:
-    print('sd-outputs folder does not exist')
+    print(user_name + ' sd-outputs folder does not exist, create now')
     os.mkdir(user_outdir)
 
 
@@ -51,7 +51,6 @@ out_path_dir = os.path.join(working_dir, 'sd-outputs',user_name)
 out_path = os.path.join(out_path_dir, 'sd-'+user_name+'-'+str(find_last(out_path_dir))+'.png')
 image.save(out_path)
 
-f = open("sd-log.txt", "w")
-f.write(out_path)
-f.close()
+print(out_path)
+
 
