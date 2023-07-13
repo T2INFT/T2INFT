@@ -45,7 +45,7 @@ app.post("/auth/register", registerValidate, authController.register);
 /**
  * login user
  * params: email, password
- * return: {success: true, data: {token, userid}}
+ * return: {success: true, data: {token, userid, wallet: {address, privateKey}}}
  */
 app.post("/auth/login", loginValidate, authController.login);
 /**
@@ -73,12 +73,6 @@ app.post("/users/unminted", usersController.unminted);
  * return: {success: true, data: [{image, imgid, txid}]}
  */
 app.post("/users/transactions", usersController.transactions);
-/**
- * get user wallet
- * params: userid
- * return: {success: true, data: {address, privateKey}}
- */
-app.post("/bc/createWallet", bcController.createWallet);
 
 /**
  * get generated image

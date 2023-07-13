@@ -10,34 +10,25 @@ import { fileFromPath } from "../blockchain/utils.js";
 const web3 = new Web3("ws://127.0.0.1:8546"); //local Geth node
 const storage = new NFTStorage({ token: config.storage.api_key });
 
-export const createWallet = async (req, res) => {
+export const createWallet = async (userid) => {
     try {
         console.log("------------Call createWallet------------");
-        const userid = req.body.userid;
-        if (!userid) {
-            return res.status(400).json({ message: "User ID is missing" });
-        }
-
         const user = await User.findByPk(userid);
         if (!user) {
-            return res.status(400).json({ message: "User not found" });
+            throw "User not found";
         }
-
-		if (user.wallet) {
-			return res.status(400).json({ message: "User already has a wallet" });
-		}
 
         const newAccount = await web3.eth.accounts.create();
         if (!newAccount) {
-            return res.status(400).json({ message: "Account not created" });
+			throw "Account not created";
         }
 
         user.wallet = newAccount.address;
         await user.save();
 
-        res.status(200).json({ success: true, data: newAccount });
+        return newAccount;
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        throw error;
     }
 };
 
