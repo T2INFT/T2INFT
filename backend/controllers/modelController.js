@@ -64,3 +64,27 @@ export const mixer = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 };
+
+export const grade = async (req, res) => {
+    try {
+        const imgid = req.body.imgid;
+        if (!imgid) {
+            return res.status(404).json({ success: false, error: "Image id not found" });
+        }
+
+        const t2image = await T2Image.findOne({ where: { imgid } });
+        if (!t2image) {
+            return res.status(404).json({ success: false, error: "Image not found" });
+        }
+
+        t2image.grade = req.body.grade;
+        const result = await t2image.save();
+        if (!result) {
+            return res.status(500).json({ success: false, error: "Image grade failed" });
+        }
+
+        res.status(200).json({ success: true, data: result });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
