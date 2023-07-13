@@ -60,60 +60,60 @@ app.post("/auth/me", checkAuth, authController.me);
  * params: userid
  * return: {success: true, data: user}
  */
-app.post("/users/profile", usersController.profile);
+app.post("/users/profile",checkAuth, usersController.profile);
 /**
  * get user unminted images
  * params: userid
  * return: {success: true, data: [{image, imgid}]]}
  */
-app.post("/users/unminted", usersController.unminted);
+app.post("/users/unminted", checkAuth,usersController.unminted);
 /**
  * get user minted images
  * params: userid
  * return: {success: true, data: [{image, imgid, txid}]}
  */
-app.post("/users/transactions", usersController.transactions);
+app.post("/users/transactions",checkAuth, usersController.transactions);
 /**
  * get user wallet
  * params: userid
  * return: {success: true, data: {address, privateKey}}
  */
-app.post("/bc/createWallet", bcController.createWallet);
+app.post("/bc/createWallet",checkAuth, bcController.createWallet);
 
 /**
  * get generated image
  * params: userid, prompt
  * return: {success: true, data: {image, imgid}}
  */
-app.post("/model/generate", modelController.generate);
+app.post("/model/generate", checkAuth,modelController.generate);
 /**
  * get generated image
  * params: userid, prompt
  * return: {success: true, data: {image, imgid}}
  */
-app.post("/model/mixer", modelController.mixer);
+app.post("/model/mixer", checkAuth,modelController.mixer);
 
 /**
  * mint image
  * params: userid, privateKey, imgid
  * return: {success: true, data: {txid, tokenId, dataurl, datahttp}}
  */
-app.post("/bc/mint", bcController.mint);
+app.post("/bc/mint",checkAuth, bcController.mint);
 /**
  * charge user
  * params: userid, value
  * return: {success: true, data: {txid}}
  */
-app.post("/bc/charge", bcController.charge);
+app.post("/bc/charge", checkAuth,bcController.charge);
 /**
  * get user balance
  * params: userid
  * return: {success: true, data: {balance}}
  */
-app.get("/bc/getBalance", bcController.getBalance);
+app.get("/bc/getBalance", checkAuth,bcController.getBalance);
 /**
  * get user owned tokens
  * param: userid
  * return: {success: true, data: {[tokenid]]}}
  */
-app.get("/bc/getOwnedTokens", bcController.getOwnedTokens);
+app.get("/bc/getOwnedTokens", checkAuth,bcController.getOwnedTokens);
