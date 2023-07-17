@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 
 const checkAuth = (req, res, next) => {
   const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");
-
   if (token) {
     try {
       // verify if token fit sercet key

@@ -2,12 +2,15 @@ import fs from "fs";
 import Transaction from "../models/transaction.js";
 import T2Image from "../models/t2image.js";
 
+import User from "../models/user.js";
+
 export const profile = async (req, res) => {
     try {
         console.log("------------Call profile------------");
         const { userid } = req.body;
+        console.log(userid);
 
-        const user = await User.findOne({ where: { userid } });
+        const user = await User.findByPk(userid);
         if (!user) {
             return res.status(404).json({ success: false, error: "User not found" });
         }

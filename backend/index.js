@@ -60,7 +60,7 @@ app.post("/auth/me", checkAuth, authController.me);
  * params: userid
  * return: {success: true, data: user}
  */
-app.post("/users/profile",checkAuth, usersController.profile);
+app.post("/users/profile", usersController.profile);
 /**
  * get user unminted images
  * params: userid
