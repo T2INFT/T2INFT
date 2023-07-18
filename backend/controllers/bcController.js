@@ -4,6 +4,7 @@ import { Web3 } from "web3";
 import config from "../config/config.js";
 import User from "../models/user.js";
 import Transaction from "../models/transaction.js";
+import T2Image from "../models/t2image.js";
 import t2i from "../contract/t2i.js";
 import { fileFromPath } from "../blockchain/utils.js";
 
@@ -67,7 +68,7 @@ export const mint = async (req, res) => {
 	if (!t2image) {
 		return res.status(400).json({ message: "Image not found" });
 	}
-	const prompt = t2image.prompts;
+	const prompt = t2image.promts ? t2image.promts : "my t2i nft";
 	const imgpath = t2image.img_path;
 
 	// nft storage
@@ -89,7 +90,7 @@ export const mint = async (req, res) => {
 
         dataurl = metadata.url;
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ success: false, error: error.message });
     }
 	// mint
     try {
@@ -113,6 +114,7 @@ export const mint = async (req, res) => {
 		const tx = await Transaction.create({
 			txid: result.transactionHash,
 			userid: userid,
+			imgid: imgid,
 			image_uri: dataurl
 		});
 

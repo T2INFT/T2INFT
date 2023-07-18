@@ -8,7 +8,6 @@ export const profile = async (req, res) => {
     try {
         console.log("------------Call profile------------");
         const { userid } = req.body;
-        console.log(userid);
 
         const user = await User.findByPk(userid);
         if (!user) {
@@ -54,14 +53,23 @@ export const transactions = async (req, res) => {
         console.log("------------Call /users/transactions------------");
         const { userid } = req.body;
 
-        // search transaction in db by email
-        const transaction = await Transaction.findAll({ where: { userid } });
-
+        // search transaction in db by userid
         const minted_imgs = [];
-        for (let i = 0; i < transaction.length; i++) {
-            let img = fs.readFileSync(transaction[i].img_path);
-            minted_imgs.push({image: img, imgid: transaction[i].imgid, txid: transaction[i].txid});
-        }
+        await Transaction.findAll({ 
+            where: { userid },
+            raw: true
+        }).then(async result => {
+            for await (const tx of result){
+                const t2image = await T2Image.findByPk(tx.imgid);
+                if (!t2image) {
+                    continue;
+                }
+                const dataurl = "https://ipfs.io/ipfs/" + tx.image_uri.split("ipfs://")[1];
+
+                const img = fs.readFileSync(t2image.img_path);
+                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txid, dataurl: dataurl});
+            }
+        });
 
         res.status(200).json({ success: true, data: minted_imgs });
     } catch (error) {

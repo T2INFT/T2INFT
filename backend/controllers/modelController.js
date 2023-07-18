@@ -1,4 +1,5 @@
 import { PythonShell } from "python-shell";
+import fs from "fs";
 import path from "path";
 import main from "require-main-filename";
 
@@ -12,12 +13,11 @@ export const generate = async (req, res) => {
     try {
         console.log("------------Call generate------------");
         const userid = req.body.userid;
-        const prompts = req.body.prompts.split(" ").toString();
-
+        const prompts = req.body.prompt;
         if (config.mode == 0) {
             console.log("------------generate test------------");
             const timgpath = root + config.test_imgs.img1;
-            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, prompts: prompts });
+            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, promts: prompts });
             const ttimgid = tt2image.null; // ?
             const timg = fs.readFileSync(timgpath);
             res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
@@ -32,7 +32,7 @@ export const generate = async (req, res) => {
             const imgpath = pyresult[-1];
 
             // get imgid then save to db
-            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: prompts });
+            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, promts: prompts });
             const imgid = t2image.null; // ?
 
             // read image
@@ -55,9 +55,9 @@ export const mixer = async (req, res) => {
         if (config.mode == 0) {
             console.log("------------mixer test------------");
             const timgpath = root + config.test_imgs.img2;
-            const tprev_img = await T2Image.findOne({ where: { imgid: prev_imgid } });
-            const tprompts = tprev_img.prompts;
-            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, prompts: tprompts });
+            const tprev_img = await T2Image.findByPk(prev_imgid);
+            const tprompts = tprev_img.promts;
+            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, promts: tprompts });
             const ttimgid = tt2image.null; // ?
             const timg = fs.readFileSync(timgpath);
             res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
@@ -73,8 +73,14 @@ export const mixer = async (req, res) => {
 
             // get imgid then save to db
             const prev_img = await T2Image.findOne({ where: { imgid: prev_imgid } });
+            if (!prev_img) {
+                return res.status(404).json({ success: false, error: "Image not found" });
+            }
+            if (prev_img.userid != userid) {
+                return res.status(404).json({ success: false, error: "The user does not owned the image" });
+            }
             const promts = prev_img.prompts;
-            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: promts });
+            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, promts: promts });
             const imgid = t2image.null; // ?
 
             // read image
