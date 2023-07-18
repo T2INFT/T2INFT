@@ -67,7 +67,7 @@
   import Signup from './Signup.vue'
   import Login from './Login.vue'
 
-  const logState = ref(true)
+  const logState = ref(false)
   const signupVisible = ref(false)
   const loginVisible = ref(false)
 </script>
