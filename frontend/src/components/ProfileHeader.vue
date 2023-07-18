@@ -96,7 +96,6 @@
   import MintNFT from './MintNFT.vue'
   import UnmintNFT from './UnmintNFT.vue'
   import UserInfo from '../components/UserInfo.vue'
-  import Wallet from '../components/Wallet.vue'
 
   const itemIndex = ref(1)
   // export default {

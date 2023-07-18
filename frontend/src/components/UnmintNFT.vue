@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-row :gutter="0">
-        <el-col v-for="(image, index) in imageList" :key="index" :span="8">
+        <el-col v-for="(image, index) in imageList" :key="index" :span="5">
           <el-card class="image-card">
             <img :src="image.src" class="image" />
             <div class="image-description">{{ image.description }}</div>
@@ -9,7 +9,6 @@
                 <el-col :span="12">
                     <el-button 
                     type="primary" 
-                    style="width: 100%;" 
                     size="mini" 
                     icon="el-icon-connection">
                         Mint
@@ -18,7 +17,6 @@
                     <el-col :span="12">
                     <el-button 
                     type="success" 
-                    style="width: 100%;" 
                     size="mini" 
                     icon="el-icon-copy-document"
                     @click="copyImage(image.src)">
@@ -78,9 +76,10 @@
   }
   </script>
   
-  <style>
+  <style scoped>
   .image-card {
     width: 200px;
+    height: 260px;
     margin: 10px;
   }
   .image {
@@ -93,6 +92,7 @@
     text-align: center;
   }
   .button-container {
+    display: flex;
     margin-top: 10px;
     text-align: center;
   }
