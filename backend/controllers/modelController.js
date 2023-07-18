@@ -14,22 +14,32 @@ export const generate = async (req, res) => {
         const userid = req.body.userid;
         const prompts = req.body.prompts.split(" ").toString();
 
-        let options = {
-            mode: 'text',
-            args: ["[" + prompts + "]", userid]
-        };
-        const pyresult = await PythonShell.run(root + config.models.main_sd, options);
+        if (config.mode == 0) {
+            console.log("------------generate test------------");
+            const timgpath = root + config.test_imgs.img1;
+            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, prompts: prompts });
+            const ttimgid = tt2image.null; // ?
+            const timg = fs.readFileSync(timgpath);
+            res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
+        }
+        else {
+            let options = {
+                mode: 'text',
+                args: ["[" + prompts + "]", userid]
+            };
+            const pyresult = await PythonShell.run(root + config.models.main_sd, options);
 
-        const imgpath = pyresult[-1];
+            const imgpath = pyresult[-1];
 
-        // get imgid then save to db
-        const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: prompts });
-        const imgid = t2image.null; // ?
+            // get imgid then save to db
+            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: prompts });
+            const imgid = t2image.null; // ?
 
-        // read image
-        const img = fs.readFileSync(imgpath);
+            // read image
+            const img = fs.readFileSync(imgpath);
 
-        res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
+            res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
+        }
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -42,24 +52,36 @@ export const mixer = async (req, res) => {
         const userid = req.body.userid;
         const prev_imgid = req.body.imgid;
 
-        let options = {
-            mode: 'text',
-            args: [userid]
-        };
-        const pyresult = await PythonShell.run(root + config.models.main_mixer, options);
+        if (config.mode == 0) {
+            console.log("------------mixer test------------");
+            const timgpath = root + config.test_imgs.img2;
+            const tprev_img = await T2Image.findOne({ where: { imgid: prev_imgid } });
+            const tprompts = tprev_img.prompts;
+            const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, prompts: tprompts });
+            const ttimgid = tt2image.null; // ?
+            const timg = fs.readFileSync(timgpath);
+            res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
+        }
+        else {
+            let options = {
+                mode: 'text',
+                args: [userid]
+            };
+            const pyresult = await PythonShell.run(root + config.models.main_mixer, options);
 
-        const imgpath = pyresult[-1];
+            const imgpath = pyresult[-1];
 
-        // get imgid then save to db
-        const prev_img = await T2Image.findOne({ where: { imgid: prev_imgid } });
-        const promts = prev_img.prompts;
-        const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: promts });
-        const imgid = t2image.null; // ?
+            // get imgid then save to db
+            const prev_img = await T2Image.findOne({ where: { imgid: prev_imgid } });
+            const promts = prev_img.prompts;
+            const t2image = await T2Image.create({ userid: userid, img_path: imgpath, prompts: promts });
+            const imgid = t2image.null; // ?
 
-        // read image
-        const img = fs.readFileSync(imgpath);
+            // read image
+            const img = fs.readFileSync(imgpath);
 
-        res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
+            res.status(200).json({ success: true, data: {image: img, imgid: imgid} });
+        }
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }

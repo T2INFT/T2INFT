@@ -1,4 +1,5 @@
 const config = {
+    mode: 0, // 0: dev, 1: prod
     con: {
         connectionLimit : 100,
         host: "localhost",
@@ -21,6 +22,10 @@ const config = {
         main_sd: "main_sd.py",
         main_mixer: "main_mixer.py"
     },
+    test_imgs: {
+        img1: "backend/testimg/04_74607.jpg",
+        img2: "backend/testimg/20_2155.jpg",
+    }
 };
 
 export default config;
