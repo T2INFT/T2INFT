@@ -74,7 +74,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .el-collapse{
     margin: 5%;
     margin-top: 0%;

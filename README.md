@@ -9,6 +9,8 @@
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
 * [Project Status](#project-status)
+* [Model Installation](#model-installation)
+* [Sample Usage](#sample-usage)
 * [Todo](#todo)
 * [Acknowledgements](#acknowledgements)
 <!-- * [License](#license) -->
@@ -17,7 +19,7 @@
 ## General Information
 - This study aims to work out a practical web application that meets potential NFT buyers' requirements in making their customized NFTs, 
 which uses the Generative model to convert text description to semantically consistent NFT style images. 
-Then the images would be converted into NFT products on Binance.
+Then the images would be converted into NFT products on Ethereum.
 
 
 ## Architecture
@@ -37,12 +39,30 @@ Image to-be-uploaded
 
 ## Web framework
 __Frontend__ : Vue 3 + JavaScript <br /><br />
-__Backend__ : PHP + JSAPI
+__Backend__ : Nodejs + MySQL
 
 
 ## Project Status
 Project is: _in progress_
 
+## Model Installation
+Python version >= 3.7
+```
+cd stable-diffusion
+pip install -r requirements.txt
+```
+
+## Sample Usage
+```
+python main-sd.py prompt user_name
+python main-mixer.py user_name
+```
+prompt: String, text requirment
+user_name: String, provided user name for registered user
+```
+python main-sd.py 'a photo of an astronaut riding a horse on mars' test_user
+python main-mixer.py test_user
+```
 
 ## Todo
 - [x] building skeleton of web app
@@ -52,11 +72,12 @@ Project is: _in progress_
 - [x] application basic functionalities
 - [x] image-mixer: adjust the file to make it work in local
 - [x] back-end: wallet
-- [ ] front-end: profile
-- [ ] front-end: login/register
-- [ ] back-end: mint
-- [ ] Model: create usable Python script - Stable Diffusion
-- [ ] Model: create usable Python script - image-mixer
+- [x] front-end: profile
+- [x] front-end: login/register
+- [x] back-end: mint
+- [x] Model: create usable Python script - Stable Diffusion
+- [x] Model: create usable Python script - image-mixer
+- [ ] Connect front-end and back-end
 
 
 ## Acknowledgements
