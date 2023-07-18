@@ -4,6 +4,9 @@
     <img src="../assets/defaultImg.png" class="image" />
 </el-card>
 </template>
+<script setup>
+    // const imageUrl = "../assets/defaultImg.png"
+</script>
 <style scoped>
 .el-card {
     margin: 5%;
