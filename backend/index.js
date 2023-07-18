@@ -14,7 +14,7 @@ const app = express();
 app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,Accpet,Authorization");
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
@@ -60,7 +60,7 @@ app.post("/auth/me", checkAuth, authController.me);
  * params: userid
  * return: {success: true, data: user}
  */
-app.post("/users/profile", usersController.profile);
+app.post("/users/profile",checkAuth, usersController.profile);
 /**
  * get user unminted images
  * params: userid
