@@ -4,14 +4,14 @@
   <el-row align="middle" class="row-container">
     <el-col :span="2">
       <div class="logo-container">
-        <img src="../assets/logo4.png" alt="Logo">
+        <img src="../assets/logo4.png" alt="Logo" @click="test">
       </div> 
       <!-- <el-image src="../assets/logo.svg" :fit="fit"></el-image> -->
       <!-- t2inft -->
     </el-col>
     <el-col :span="2" :offset="19">
       <div class="icon-container">
-        <el-tooltip content="Go to wallet." placement="bottom">
+        <el-tooltip content="Go to wallet." placement="bottom" @click="test2">
           <i class="el-icon-wallet custom-icon"></i>
         </el-tooltip>
       </div>
@@ -31,7 +31,7 @@
         </template>
 
       </el-popover> -->
-      <el-dropdown  v-if="logState" trigger="click">
+      <el-dropdown  v-if="store.state.logState" trigger="click">
         <div class="avatar-container">
             <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar>
         </div>
@@ -60,17 +60,48 @@
   <el-divider style="margin: 0;"></el-divider>
   <!-- <Login v-model:loginVisible="loginVisible" v-model:signupVisible="signupVisible"/>
   <Signup v-model:signupVisible="signupVisible" v-model:loginVisible="loginVisible"/> -->
-  <SignupLogin v-model:signupVisible="signupVisible" v-model:loginVisible="loginVisible" />
+  <SignupLogin v-model:signupVisible="signupVisible" v-model:loginVisible="loginVisible"/>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+import axios from 'axios';
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex';
+const store = useStore()
+// console.log(store.state.logState)
+// console.log(computed(()=>store.state.logState))
   // import Signup from './Signup.vue'
   // import Login from './Login.vue'
   import SignupLogin from './SignupLogin.vue';
   const logState = ref(true)
   const signupVisible = ref(false)
   const loginVisible = ref(false)
+  // const token =  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsI…DE1fQ.5cwLFpOtR-4fFsWAjUik5WVUp2Kp-iHIvOHevWgq6e4'
+
+  function test() {
+    console.log(store.state.token)
+    // console.log(store.state.userid)
+    axios.post('http://10.68.119.45:4000/users/profile', {
+      'userid': store.state.userid,
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        console.log('login success:', res.data);
+        // 登录成功，跳转到首页或其他页面
+    })
+  }
+
+  function test2() {
+
+    // console.log(localStorage.getItem('userInfo')['userid'])
+    // console.log(localStorage.getItem('token'))
+    // console.log(store.state.token)
+
+    
+  }
 </script>
 <!-- <script>
   import { ref } from 'vue'

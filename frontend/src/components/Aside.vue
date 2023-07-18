@@ -12,7 +12,7 @@
                 </el-option></el-select>
             </el-form-item>    
             <el-form-item>
-                <el-button type="primary">Generate</el-button>
+                <el-button type="primary" @click="generate">Generate</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
@@ -23,7 +23,7 @@
                 <el-slider v-model="formTransfer.strength" :step="10" show-stops disabled> </el-slider>
             </el-form-item>
             <el-form-item>
-                <el-button type="warning">Transfer</el-button>
+                <el-button type="warning" @click="transfer">Transfer</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
@@ -33,15 +33,50 @@
                 <el-input v-model="formOnchain.pkey"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="success">On-chain</el-button>
+                <el-button type="success" @click="onchain">On-chain</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
 </el-collapse>
 
 </template>
+<script setup>
+import { reactive, toRefs } from 'vue'
 
-<script>
+const data = reactive({
+  formGeneration: {
+    name: '',
+    region: '',
+    type: '',
+    value: ''
+  },
+  options: [
+    {
+      value: 'sd1_5',
+      label: 'Stable Diffusion v1-5'
+    },
+  ],
+  formTransfer: {
+    strength: 100,
+  },
+  formOnchain: {
+    pkey: '',
+  },
+  activeNames: ['1'],
+  labelPosition: 'left'
+})
+const { formGeneration, options, formTransfer, formOnchain, activeNames, labelPosition } = toRefs(data)
+function generate() {
+
+}
+function transfer() {
+
+}
+function onchain() {
+    
+}
+</script>
+<!-- <script>
 import { reactive, toRefs, ref } from 'vue'
 export default {
     setup() {
@@ -73,7 +108,7 @@ export default {
     }
     }
 }
-</script>
+</script> -->
 <style scoped>
 .el-collapse{
     margin: 5%;
