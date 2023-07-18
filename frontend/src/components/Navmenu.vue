@@ -1,4 +1,6 @@
 <template>
+  <Signup :signupVisible="signupVisible"/>
+
   <el-row align="middle" class="row-container">
     <el-col :span="2">
       <div class="logo-container">
@@ -34,7 +36,9 @@
             <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" >
-        <el-dropdown-item icon="el-icon-food">Profile</el-dropdown-item>
+          <router-link to='/profile'>
+            <el-dropdown-item icon="el-icon-food">Profile</el-dropdown-item>
+          </router-link>
         <el-dropdown-item icon="el-icon-burger" @click="logState=false;">Log out</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -43,7 +47,7 @@
             <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" >
-        <el-dropdown-item icon="el-icon-food" @click="loginVisible=true;">
+        <el-dropdown-item icon="el-icon-food" @click="logState=true;">
           Log in 
         </el-dropdown-item>
         <el-dropdown-item icon="el-icon-burger" @click="signupVisible = true;">
@@ -64,7 +68,7 @@
   // import Signup from './Signup.vue'
   // import Login from './Login.vue'
   import SignupLogin from './SignupLogin.vue';
-  const logState = ref(false)
+  const logState = ref(true)
   const signupVisible = ref(false)
   const loginVisible = ref(false)
 </script>
