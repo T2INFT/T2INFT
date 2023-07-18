@@ -2,6 +2,7 @@
 import express from "express";
 import sequelize from "./db/db.js";
 
+import config from "./config/config.js";
 import { registerValidate, loginValidate } from "./validations/auth.js";
 import checkAuth from "./validations/checkAuth.js";
 import * as authController from "./controllers/authController.js";
@@ -24,7 +25,7 @@ app.use(function (req, res, next) {
 
 app.use(express.json());
 
-const PORT = process.env.PORT || 4000;
+const PORT = config.port || 4000;
 
 app.listen(PORT, () => {console.log(`Server is running on port ${PORT}.`);});
 

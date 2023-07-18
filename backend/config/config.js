@@ -1,5 +1,6 @@
 const config = {
     mode: 0, // 0: dev, 1: prod
+    port: 4000,
     con: {
         connectionLimit : 100,
         host: "localhost",
