@@ -4,40 +4,32 @@ import { Web3 } from "web3";
 import config from "../config/config.js";
 import User from "../models/user.js";
 import Transaction from "../models/transaction.js";
+import T2Image from "../models/t2image.js";
 import t2i from "../contract/t2i.js";
 import { fileFromPath } from "../blockchain/utils.js";
 
 const web3 = new Web3("ws://127.0.0.1:8546"); //local Geth node
 const storage = new NFTStorage({ token: config.storage.api_key });
 
-export const createWallet = async (req, res) => {
+export const createWallet = async (userid) => {
     try {
         console.log("------------Call createWallet------------");
-        const userid = req.body.userid;
-        if (!userid) {
-            return res.status(400).json({ message: "User ID is missing" });
-        }
-
         const user = await User.findByPk(userid);
         if (!user) {
-            return res.status(400).json({ message: "User not found" });
+            throw "User not found";
         }
-
-		if (user.wallet) {
-			return res.status(400).json({ message: "User already has a wallet" });
-		}
 
         const newAccount = await web3.eth.accounts.create();
         if (!newAccount) {
-            return res.status(400).json({ message: "Account not created" });
+			throw "Account not created";
         }
 
         user.wallet = newAccount.address;
         await user.save();
 
-        res.status(200).json({ success: true, data: newAccount });
+        return newAccount;
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        throw error;
     }
 };
 
@@ -76,7 +68,7 @@ export const mint = async (req, res) => {
 	if (!t2image) {
 		return res.status(400).json({ message: "Image not found" });
 	}
-	const prompt = t2image.prompts;
+	const prompt = t2image.promts ? t2image.promts : "my t2i nft";
 	const imgpath = t2image.img_path;
 
 	// nft storage
@@ -98,7 +90,7 @@ export const mint = async (req, res) => {
 
         dataurl = metadata.url;
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ success: false, error: error.message });
     }
 	// mint
     try {
@@ -122,6 +114,7 @@ export const mint = async (req, res) => {
 		const tx = await Transaction.create({
 			txid: result.transactionHash,
 			userid: userid,
+			imgid: imgid,
 			image_uri: dataurl
 		});
 
@@ -145,17 +138,9 @@ export const mint = async (req, res) => {
 };
 
 
-export const charge = async (req, res) => {
+export const charge = async (address, value) => {
 	try {
-		const userid = req.body.userid;
-		const value = req.body.value;
-
-		const user = await User.findByPk(userid);
-		if (!user) {
-			return res.status(400).json({ message: "User not found" });
-		}
-
-		const toAddress = user.wallet;
+		const toAddress = address;
 
 		var result = await web3.eth.sendTransaction({
 			from: coinbase, 
@@ -165,17 +150,17 @@ export const charge = async (req, res) => {
 		// console.log(result);
 
 		if (!result) {
-			return res.status(500).json({ success: false, error: "Transaction failed" });
+			throw "Transaction failed";
 		}
 
 		var txData = {
 			txid: result.transactionHash,
 		};
 
-		return res.status(200).json({ success: true, data: txData });
+		return txData;
 	}
 	catch (error) {
-		res.status(500).json({ success: false, error: error.message });
+		throw error;
 	}
 };
 

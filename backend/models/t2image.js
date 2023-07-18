@@ -1,9 +1,12 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/db.js";
 
+import User from "./user.js";
+import Transaction from "./transaction.js";
+
 const T2Image = sequelize.define("t2image", {
     imgid: {
-        type: DataType.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true
     },
     userid: DataTypes.INTEGER,
@@ -11,7 +14,5 @@ const T2Image = sequelize.define("t2image", {
     promts: DataTypes.STRING,
     create_time: DataTypes.DATE,
 });
-
-T2Image.belongsTo(User, { foreignKey: "userid" });
 
 export default T2Image;

@@ -4,11 +4,20 @@ import bcrypt from "bcrypt";
 import config from "../config/config.js";
 import User from "../models/user.js";
 
+import { createWallet, charge } from "./bcController.js";
+
+function revisedRandUsername() {
+    return Math.random().toString(36).replace(/[^a-z0-9]+/g, '').substring(2, 10);
+}
+
 export const register = async (req, res) => {
     try {
         console.log("------------Call register------------");
         console.log(req.body);
-        const { username, email, password } = req.body;
+        let { username, email, password } = req.body;
+        if (!username) {
+            username = revisedRandUsername();
+        }
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -30,7 +39,12 @@ export const register = async (req, res) => {
             expiresIn: config.jwt.expire,
         });
 
-        res.status(200).json({ success: true, data:  {token: token, userid: newUser.null} });
+        // create wallet
+        const wallet = await createWallet(newUser.null);
+        // auto charge
+        const txData = await charge(wallet.address, 20);
+
+        res.status(200).json({ success: true, data: {token: token, userid: newUser.null, wallet: wallet} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -67,7 +81,7 @@ export const login = async (req, res) => {
 
 export const me = async (req, res) => {
     try {
-        const user = await User.findByPk(req.user.id, {
+        const user = await User.findByPk(req.userid, {
             attributes: [
                 "id",
                 "username",

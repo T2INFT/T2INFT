@@ -1,20 +1,21 @@
 
 import express from "express";
-import multer from "multer";
 import sequelize from "./db/db.js";
 
+import config from "./config/config.js";
 import { registerValidate, loginValidate } from "./validations/auth.js";
 import checkAuth from "./validations/checkAuth.js";
 import * as authController from "./controllers/authController.js";
 import * as usersController from "./controllers/usersController.js";
 import * as bcController from "./controllers/bcController.js";
 import * as modelController from "./controllers/modelController.js";
+import "./models/modelRelation.js";
 
 const app = express();
 app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type,Accpet,Authorization");
 
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
@@ -24,9 +25,7 @@ app.use(function (req, res, next) {
 
 app.use(express.json());
 
-var upload = multer({ dest: "upload/"});
-
-const PORT = process.env.PORT || 4000;
+const PORT = config.port || 4000;
 
 app.listen(PORT, () => {console.log(`Server is running on port ${PORT}.`);});
 
@@ -38,45 +37,78 @@ sequelize.authenticate()
         console.error("Unable to connect to the database:", error);
     })
 
-// register user, return {success: true, data: {token, userid}}
-// email, username, password
+/** 
+ * register user
+ * params: email, username, password 
+ * return: {success: true, data: {token, userid}}
+ */ 
 app.post("/auth/register", registerValidate, authController.register);
-// login user, return {success: true, data: {token, userid}}
-// email, password
+/**
+ * login user
+ * params: email, password
+ * return: {success: true, data: {token, userid, wallet: {address, privateKey}}}
+ */
 app.post("/auth/login", loginValidate, authController.login);
-// logout user, return {success: true, data}
-// token
+/**
+ * logout user
+ * params: token
+ * return: {success: true, data}
+ */
 app.post("/auth/me", checkAuth, authController.me);
 
-// get user info, return {success: true, data: user}
-// userid
-app.post("/users/profile", usersController.profile);
-// get user unminted images, return {success: true, data: [{image, imgid}]]}
-// userid
-app.post("/users/unminted", usersController.unminted);
-// get user minted images, return {success: true, data: [{image, imgid, txid}]}
-// userid
-app.post("/users/transactions", usersController.transactions);
+/**
+ * get user info
+ * params: userid
+ * return: {success: true, data: user}
+ */
+app.post("/users/profile", checkAuth, usersController.profile);
+/**
+ * get user unminted images
+ * params: userid
+ * return: {success: true, data: [{image, imgid}]]}
+ */
+app.post("/users/unminted", checkAuth, usersController.unminted);
+/**
+ * get user minted images
+ * params: userid
+ * return: {success: true, data: [{image, imgid, txid}]}
+ */
+app.post("/users/transactions", checkAuth, usersController.transactions);
 
-// get generated image, return {success: true, data: {image, imgid}}
-// userid, prompt
-app.post("/generate", modelController.generate);
-// get mixed image, return {success: true, data: {image, imgid}}
-// userid, imgid
-app.post("/mixer", modelController.mixer);
+/**
+ * get generated image
+ * params: userid, prompt
+ * return: {success: true, data: {image, imgid}}
+ */
+app.post("/model/generate", checkAuth, modelController.generate);
+/**
+ * get generated image
+ * params: userid, prompt
+ * return: {success: true, data: {image, imgid}}
+ */
+app.post("/model/mixer", checkAuth, modelController.mixer);
+/**
+ * grade image
+ * params: userid, imgid, grade
+ * return: {success: true}
+ */
+app.post("/model/grade", checkAuth, modelController.grade);
 
-// get user wallet, return {success: true, data: {address, privateKey}}
-// userid
-app.post("/user/createWallet", bcController.createWallet);
-// mint image, return {success: true, data: {txid, tokenId, dataurl, datahttp}}
-// userid, privateKey, imgid
-app.post("/mint", bcController.mint);
-// charge user, return {success: true, data: {txid}}
-// userid, value
-app.post("/charge", bcController.charge);
-// get user balance, return {success: true, data: {balance}}
-// userid
-app.get("/getBalance", bcController.getBalance);
-// get user owned tokens, return {success: true, data: {[tokenid]]}}
-// userid
-app.get("/getOwnedTokens", bcController.getOwnedTokens);
+/**
+ * mint image
+ * params: userid, privateKey, imgid
+ * return: {success: true, data: {txid, tokenId, dataurl, datahttp}}
+ */
+app.post("/bc/mint", checkAuth, bcController.mint);
+/**
+ * get user balance
+ * params: userid
+ * return: {success: true, data: {balance}}
+ */
+app.get("/bc/getBalance", checkAuth, bcController.getBalance);
+/**
+ * get user owned tokens
+ * param: userid
+ * return: {success: true, data: {[tokenid]]}}
+ */
+app.get("/bc/getOwnedTokens", checkAuth, bcController.getOwnedTokens);

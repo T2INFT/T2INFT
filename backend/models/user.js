@@ -1,6 +1,8 @@
-import { DataTypes, Transaction } from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelize from "../db/db.js";
+
 import T2Image from "./t2image.js";
+import Transaction from "./transaction.js";
 
 const User = sequelize.define("user", {
     id: {
@@ -13,8 +15,5 @@ const User = sequelize.define("user", {
     wallet: DataTypes.STRING,
     reg_date: DataTypes.DATE,
 });
-
-User.hasMany(T2Image, { foreignKey: "userid" });
-User.hasMany(Transaction, { foreignKey: "userid" });
 
 export default User;

@@ -1,12 +1,14 @@
 import jwt from "jsonwebtoken";
 
-const checkAuth = (req, res, next) => {
-  const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");
+import config from "../config/config.js";
 
+const checkAuth = (req, res, next) => {
+  console.log("------------Call checkAuth------------");
+  const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");
   if (token) {
     try {
       // verify if token fit sercet key
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const decodedToken = jwt.verify(token, config.jwt.secret);
 
       // save variable id in global variable
       req.userid = decodedToken.id;

@@ -2,12 +2,14 @@ import fs from "fs";
 import Transaction from "../models/transaction.js";
 import T2Image from "../models/t2image.js";
 
+import User from "../models/user.js";
+
 export const profile = async (req, res) => {
     try {
         console.log("------------Call profile------------");
         const { userid } = req.body;
 
-        const user = await User.findOne({ where: { userid } });
+        const user = await User.findByPk(userid);
         if (!user) {
             return res.status(404).json({ success: false, error: "User not found" });
         }
@@ -51,14 +53,23 @@ export const transactions = async (req, res) => {
         console.log("------------Call /users/transactions------------");
         const { userid } = req.body;
 
-        // search transaction in db by email
-        const transaction = await Transaction.findAll({ where: { userid } });
-
+        // search transaction in db by userid
         const minted_imgs = [];
-        for (let i = 0; i < transaction.length; i++) {
-            let img = fs.readFileSync(transaction[i].img_path);
-            minted_imgs.push({image: img, imgid: transaction[i].imgid, txid: transaction[i].txid});
-        }
+        await Transaction.findAll({ 
+            where: { userid },
+            raw: true
+        }).then(async result => {
+            for await (const tx of result){
+                const t2image = await T2Image.findByPk(tx.imgid);
+                if (!t2image) {
+                    continue;
+                }
+                const dataurl = "https://ipfs.io/ipfs/" + tx.image_uri.split("ipfs://")[1];
+
+                const img = fs.readFileSync(t2image.img_path);
+                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txid, dataurl: dataurl});
+            }
+        });
 
         res.status(200).json({ success: true, data: minted_imgs });
     } catch (error) {
