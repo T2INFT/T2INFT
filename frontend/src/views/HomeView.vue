@@ -2,7 +2,7 @@
 // import TheWelcome from '../components/TheWelcome.vue'
 import Navmenu from '../components/Navmenu.vue';
 import Aside from '../components/Aside.vue';
-import Footer from '../components/footer.vue';
+import Footer from '../components/Footer.vue';
 import Main from '../components/Main.vue';
 </script>
 
@@ -24,8 +24,8 @@ import Main from '../components/Main.vue';
   </el-container>
 </el-container>
 </template>
-<style>
-.el-header{
+<style scoped>
+.el-header {
   background-color: #ffff;
   text-align: center;
   /* line-height: 60px; */
@@ -55,5 +55,4 @@ import Main from '../components/Main.vue';
 .el-container > .el-main {
   padding: 0;
 }
-  
 </style>
