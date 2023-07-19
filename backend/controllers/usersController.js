@@ -67,7 +67,7 @@ export const transactions = async (req, res) => {
                 const dataurl = "https://ipfs.io/ipfs/" + tx.image_uri.split("ipfs://")[1];
 
                 const img = fs.readFileSync(t2image.img_path);
-                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txid, dataurl: dataurl});
+                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txhash, dataurl: dataurl});
             }
         });
 

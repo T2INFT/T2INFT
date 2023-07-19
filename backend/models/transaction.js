@@ -6,9 +6,10 @@ import T2Image from "./t2image.js";
 
 const Transaction = sequelize.define("transaction", {
     txid: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         primaryKey: true
     },
+    txhash: DataTypes.STRING,
     userid: DataTypes.INTEGER,
     imgid: DataTypes.INTEGER,
     image_uri: DataTypes.STRING,
