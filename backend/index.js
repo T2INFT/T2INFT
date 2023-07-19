@@ -1,6 +1,7 @@
 
 import express from "express";
 import sequelize from "./db/db.js";
+import morgan from "morgan";
 
 import config from "./config/config.js";
 import { registerValidate, loginValidate } from "./validations/auth.js";
@@ -24,6 +25,9 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.json());
+
+app.use(morgan("[:date[iso]] Started :method :url for :remote-addr", true));
+app.use(morgan("[:date[iso]] Completed :status :res[content-length] in :response-time ms"));
 
 const PORT = config.port || 4000;
 

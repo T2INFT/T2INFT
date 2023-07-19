@@ -6,7 +6,6 @@ import User from "../models/user.js";
 
 export const profile = async (req, res) => {
     try {
-        console.log("------------Call profile------------");
         const { userid } = req.body;
 
         const user = await User.findByPk(userid);
@@ -22,7 +21,6 @@ export const profile = async (req, res) => {
 
 export const unminted = async (req, res) => {
     try {
-        console.log("------------Call /users/unminted------------");
         const { userid } = req.body;
 
         const unminted = await T2Image.findAll(
@@ -50,7 +48,6 @@ export const unminted = async (req, res) => {
 
 export const transactions = async (req, res) => {
     try {
-        console.log("------------Call /users/transactions------------");
         const { userid } = req.body;
 
         // search transaction in db by userid

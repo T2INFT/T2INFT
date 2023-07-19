@@ -6,7 +6,7 @@ import User from "../models/user.js";
 import Transaction from "../models/transaction.js";
 import T2Image from "../models/t2image.js";
 import t2i from "../contract/t2i.js";
-import { fileFromPath } from "../blockchain/utils.js";
+import { fileFromPath } from "../utils/utils.js";
 
 const web3 = new Web3("ws://127.0.0.1:8546"); //local Geth node
 const storage = new NFTStorage({ token: config.storage.api_key });
@@ -37,7 +37,6 @@ const contract = new web3.eth.Contract(t2i.abi, t2i.address);
 const coinbase = await web3.eth.getCoinbase();
 
 export const mint = async (req, res) => {
-	console.log("------------Call mint------------");
     let dataurl;
     // TODO: get user wallet from database, get private key from front-end
     // private key communication need encryption?
@@ -112,7 +111,7 @@ export const mint = async (req, res) => {
 
 		// save to database
 		const tx = await Transaction.create({
-			txid: result.transactionHash,
+			txhash: result.transactionHash,
 			userid: userid,
 			imgid: imgid,
 			image_uri: dataurl
