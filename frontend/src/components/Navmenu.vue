@@ -80,9 +80,11 @@ function toWelcome() {
   router.push('/')
 }
 
+
 function toProfile() {
   router.push('/profile')
 }
+
 
   function test2() {
     console.log(localStorage.userid)
