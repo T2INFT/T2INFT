@@ -85,6 +85,7 @@ function generate() {
   }
 })
     .then(res => {
+<<<<<<< Updated upstream
         console.log(res)
         const uint8data = new Uint8Array(res.data.data.image.data)
         const blob = new Blob([uint8data], { type: 'image/jpeg' })
@@ -94,6 +95,18 @@ function generate() {
         const img = document.querySelector('#t2i')
         img.src = url
         console.log(url)
+=======
+        // console.log(res)
+        console.log(res.data.data.image.data)
+        const uint8data = new Uint8Array(res.data.data.image.data)
+        const blob = new Blob([uint8data], { type: 'image/jpeg' })
+        // console.log(typeof(blob))
+        // console.log(blob)
+        const url = URL.createObjectURL(blob)
+        const img = document.querySelector('#t2i')
+        img.src = url
+        // console.log(url)
+>>>>>>> Stashed changes
 
         store.state.imgid = res.data.data.imgid
         store.state.imgdata = blob

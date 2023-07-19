@@ -80,6 +80,13 @@ function toWelcome() {
   router.push('/')
 }
 
+<<<<<<< Updated upstream
+=======
+function toProfile() {
+  router.push('/profile')
+}
+
+>>>>>>> Stashed changes
   function test2() {
     console.log(localStorage.userid)
     console.log(typeof(localStorage.userid))
