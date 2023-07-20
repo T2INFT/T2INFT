@@ -1,5 +1,5 @@
 const config = {
-    mode: 0, // 0: dev, 1: prod
+    mode: 1, // 0: dev, 1: prod
     port: 4000,
     con: {
         connectionLimit : 100,
@@ -26,7 +26,10 @@ const config = {
     test_imgs: {
         img1: "backend/testimg/04_74607.jpg",
         img2: "backend/testimg/20_2155.jpg",
-    }
+    },
+    gpu_server: "http://120.237.6.99:8000",
+    img_save_path: "backend/images/",
+
 };
 
 export default config;
