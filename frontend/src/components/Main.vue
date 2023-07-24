@@ -1,13 +1,10 @@
 <template>
 <h1 style="font-size: 30px; font-weight: bold; text-align: left; margin: 1.2% 5% 1.2% 5%;">Output</h1>
 <el-card :body-style="{ padding: '0px'}" shadow="hover">
-    <img id="t2i" src="../assets/defaultImg.png" class="image" />
+    <img src="../assets/defaultImg.png" class="image" />
 </el-card>
 </template>
-<script setup>
-    // const imageUrl = "../assets/defaultImg.png"
-</script>
-<style scoped>
+<style>
 .el-card {
     margin: 5%;
     margin-top: 0;
