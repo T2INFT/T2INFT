@@ -22,7 +22,6 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterLink to="/login">Login</RouterLink>
   </nav> -->
 </template>
-
 <!-- <style scoped>
 header {
   line-height: 1.5;

@@ -12,7 +12,7 @@
                 </el-option></el-select>
             </el-form-item>    
             <el-form-item>
-                <el-button type="primary">Generate</el-button>
+                <el-button type="primary" @click="generate">Generate</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
@@ -23,7 +23,7 @@
                 <el-slider v-model="formTransfer.strength" :step="10" show-stops disabled> </el-slider>
             </el-form-item>
             <el-form-item>
-                <el-button type="warning">Transfer</el-button>
+                <el-button type="warning" @click="transfer">Transfer</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
@@ -33,15 +33,125 @@
                 <el-input v-model="formOnchain.pkey"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="success">On-chain</el-button>
+                <el-button type="success" @click="onchain">On-chain</el-button>
             </el-form-item>
         </el-form>
     </el-collapse-item>
 </el-collapse>
 
 </template>
+<script setup>
+import { reactive, toRefs, ref } from 'vue'
+import { useStore } from 'vuex';
+import axios from 'axios';
 
-<script>
+
+const store = useStore()
+// const imgid = ref(-1)
+const data = reactive({
+  formGeneration: {
+    name: '',
+    region: '',
+    type: '',
+    value: ''
+  },
+  options: [
+    {
+      value: 'sd1_5',
+      label: 'Stable Diffusion v1-5'
+    },
+  ],
+  formTransfer: {
+    strength: 100,
+  },
+  formOnchain: {
+    pkey: '',
+  },
+  activeNames: ['1'],
+  labelPosition: 'left'
+})
+const imageUrl = ref('../assets/defaultImg.png')
+const { formGeneration, options, formTransfer, formOnchain, activeNames, labelPosition } = toRefs(data)
+function generate() {
+    // console.log(store.state.token)
+    // console.log(store.state.userid)
+    // console.log(data.formGeneration.prompt)
+    axios.post(store.state.url+'/model/generate', {
+      'userid': store.state.userid,
+      'prompt': data.formGeneration.prompt
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        // console.log(res)
+        console.log(res.data.data.image.data)
+        const uint8data = new Uint8Array(res.data.data.image.data)
+        const blob = new Blob([uint8data], { type: 'image/jpeg' })
+        // console.log(typeof(blob))
+        // console.log(blob)
+        const url = URL.createObjectURL(blob)
+        const img = document.querySelector('#t2i')
+        img.src = url
+        // console.log(url)
+
+        store.state.imgid = res.data.data.imgid
+        store.state.imgdata = blob
+        store.state.isRateDisabled = false
+        store.state.rateValue = null
+    })
+}
+
+function transfer() {
+    axios.post(store.state.url+'/model/mixer', {
+      'userid': store.state.userid,
+      'imgid': store.state.imgid 
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        console.log(res.data)
+        const uint8data = new Uint8Array(res.data.data.image.data)
+        console.log(typeof(uint8data))
+        console.log(uint8data)
+        
+        const blob = new Blob([uint8data], { type: 'image/jpeg' })
+        const url = URL.createObjectURL(blob)
+        const img = document.querySelector('#t2i')
+        console.log(img)
+        img.src = url
+        store.state.imgid  = res.data.data.imgid
+        store.state.imgdata = blob
+        store.state.isRateDisabled = false
+        store.state.rateValue = null
+    })
+}
+
+function onchain() {
+    console.log({
+      'userid': store.state.userid,
+      'privateKey': data.formOnchain.pkey,
+      'imgid': store.state.imgid 
+    })
+    axios.post(store.state.url+'/bc/mint', {
+      'userid': store.state.userid,
+      'privateKey': data.formOnchain.pkey,
+      'imgid': store.state.imgid
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        store.state.datahttp = res.data.data.datahttp
+        console.log(res)
+    })
+}
+</script>
+<!-- <script>
 import { reactive, toRefs, ref } from 'vue'
 export default {
     setup() {
@@ -73,8 +183,8 @@ export default {
     }
     }
 }
-</script>
-<style>
+</script> -->
+<style scoped>
 .el-collapse{
     margin: 5%;
     margin-top: 0%;
