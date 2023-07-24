@@ -37,10 +37,7 @@ else:
     os.mkdir(user_outdir)
 
 
-
-
-#model_id = "runwayml/stable-diffusion-v1-5"
-model_id = "CompVis/stable-diffusion-v1-4"
+model_id = "runwayml/stable-diffusion-v1-5"
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
 pipe = pipe.to("cuda")
 
@@ -53,5 +50,3 @@ out_path = os.path.join(out_path_dir, 'sd-'+user_name+'-'+str(find_last(out_path
 image.save(out_path)
 
 print(out_path)
-
-

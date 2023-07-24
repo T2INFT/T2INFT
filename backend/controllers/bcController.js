@@ -6,7 +6,7 @@ import User from "../models/user.js";
 import Transaction from "../models/transaction.js";
 import T2Image from "../models/t2image.js";
 import t2i from "../contract/t2i.js";
-import { fileFromPath } from "../blockchain/utils.js";
+import { fileFromPath } from "../utils/utils.js";
 
 const web3 = new Web3("ws://127.0.0.1:8546"); //local Geth node
 const storage = new NFTStorage({ token: config.storage.api_key });
@@ -37,63 +37,58 @@ const contract = new web3.eth.Contract(t2i.abi, t2i.address);
 const coinbase = await web3.eth.getCoinbase();
 
 export const mint = async (req, res) => {
-	console.log("------------Call mint------------");
-    let dataurl;
-    // TODO: get user wallet from database, get private key from front-end
-    // private key communication need encryption?
-	const userid = req.body.userid;
-	const privateKey = req.body.privateKey;
-	const imgid = req.body.imgid;
+	try {
+		let dataurl;
 
-    if (!userid) {
-        return res.status(400).json({ message: "User ID is missing" });
-    }
+		const userid = req.body.userid;
+		const privateKey = req.body.privateKey;
+		const imgid = req.body.imgid;
 
-	if (!privateKey) {
-		return res.status(400).json({ message: "Private key is missing" });
-	}
+		if (!userid) {
+			return res.status(400).json({ message: "User ID is missing" });
+		}
 
-	if (!imgid) {
-		return res.status(400).json({ message: "Image ID is missing" });
-	}
+		if (!privateKey) {
+			return res.status(400).json({ message: "Private key is missing" });
+		}
 
-    const user = await User.findByPk(userid);
-    if (!user) {
-        return res.status(400).json({ message: "User not found" });
-    }
-	
-    const me = { address: user.wallet, privateKey: privateKey };
+		if (!imgid) {
+			return res.status(400).json({ message: "Image ID is missing" });
+		}
 
-	const t2image = await T2Image.findByPk(imgid);
-	if (!t2image) {
-		return res.status(400).json({ message: "Image not found" });
-	}
-	const prompt = t2image.promts ? t2image.promts : "my t2i nft";
-	const imgpath = t2image.img_path;
+		const user = await User.findByPk(userid);
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+		
+		const me = { address: user.wallet, privateKey: privateKey };
 
-	// nft storage
-    try {
+		const t2image = await T2Image.findByPk(imgid);
+		if (!t2image) {
+			return res.status(400).json({ message: "Image not found" });
+		}
+		const prompt = t2image.promts ? t2image.promts : "my t2i nft";
+		const imgpath = t2image.img_path;
+
+		// nft storage
 		const image = await fileFromPath(imgpath, config.models.image_type);
 		if (!image) {
 			return res.status(400).json({ message: "Image upload failed" });
 		}
 
-        const metadata = await storage.store({
+		const metadata = await storage.store({
 			name: user.username + " " + t2image.imgid,
 			description: prompt,
-            image: image
-        });
+			image: image
+		});
 
-        if (!metadata || !metadata.url) {
-            return res.status(400).json({ message: "NFT Storage failed" });
-        }
+		if (!metadata || !metadata.url) {
+			return res.status(400).json({ message: "NFT Storage failed" });
+		}
 
-        dataurl = metadata.url;
-    } catch (error) {
-        return res.status(500).json({ success: false, error: error.message });
-    }
-	// mint
-    try {
+		dataurl = metadata.url;
+
+		// mint
 		const gasPrice = await web3.eth.getGasPrice();
 		var rawTransaction = {
 			from: me.address,
@@ -106,13 +101,13 @@ export const mint = async (req, res) => {
 		const result = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 		// console.log(result);
 
-        if (!result) {
-            res.status(500).json({ success: false, error: "Transaction failed" });
-        }
+		if (!result) {
+			res.status(500).json({ success: false, error: "Transaction failed" });
+		}
 
 		// save to database
 		const tx = await Transaction.create({
-			txid: result.transactionHash,
+			txhash: result.transactionHash,
 			userid: userid,
 			imgid: imgid,
 			image_uri: dataurl
@@ -131,10 +126,11 @@ export const mint = async (req, res) => {
 			datahttp: "https://ipfs.io/ipfs/" + dataurl.split("ipfs://")[1]
 		};
 
-        return res.status(200).json({ success: true, data: txData });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
+		return res.status(200).json({ success: true, data: txData });
+	} catch (error) {
+		res.status(500).json({ success: false, error: error.message });
+	}
+
 };
 
 

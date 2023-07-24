@@ -32,8 +32,17 @@ CREATE TABLE `t2images` (
   PRIMARY KEY (`imgid`),
   KEY `userid` (`userid`),
   CONSTRAINT `t2images_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t2images`
+--
+
+LOCK TABLES `t2images` WRITE;
+/*!40000 ALTER TABLE `t2images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t2images` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `transactions`
@@ -43,18 +52,28 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
-  `txid` varchar(100) NOT NULL,
+  `txhash` varchar(100) NOT NULL,
   `userid` int NOT NULL,
   `image_uri` varchar(200) NOT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `imgid` int DEFAULT NULL,
+  `txid` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`txid`),
   KEY `userid` (`userid`),
   KEY `imgid` (`imgid`),
   CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`id`),
   CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`imgid`) REFERENCES `t2images` (`imgid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transactions`
+--
+
+LOCK TABLES `transactions` WRITE;
+/*!40000 ALTER TABLE `transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transactions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -71,8 +90,17 @@ CREATE TABLE `users` (
   `wallet` varchar(255) DEFAULT NULL,
   `reg_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -83,4 +111,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-13 13:55:02
+-- Dump completed on 2023-07-19 20:05:36

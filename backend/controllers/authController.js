@@ -12,8 +12,6 @@ function revisedRandUsername() {
 
 export const register = async (req, res) => {
     try {
-        console.log("------------Call register------------");
-        console.log(req.body);
         let { username, email, password } = req.body;
         if (!username) {
             username = revisedRandUsername();
@@ -52,7 +50,6 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        console.log("------------Call login------------");
         const { email, password } = req.body;
 
         // search user in db by email

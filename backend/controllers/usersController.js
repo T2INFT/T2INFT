@@ -6,7 +6,6 @@ import User from "../models/user.js";
 
 export const profile = async (req, res) => {
     try {
-        console.log("------------Call profile------------");
         const { userid } = req.body;
 
         const user = await User.findByPk(userid);
@@ -22,23 +21,14 @@ export const profile = async (req, res) => {
 
 export const unminted = async (req, res) => {
     try {
-        console.log("------------Call /users/unminted------------");
         const { userid } = req.body;
 
-        const unminted = await T2Image.findAll(
-            { 
-                where: { userid },
-                include: [
-                    { 
-                        model: Transaction,
-                        required: false // left outer join
-                    }
-                ]
-            }
-        );
+        const unminted = await T2Image.findAll({ where: { userid }});
         
         let unminted_imgs = [];
         for (let i = 0; i < unminted.length; i++) {
+            const t = await Transaction.findAll({ where: {imgid: unminted[i].imgid }});
+            if (t.length > 0) continue;
             let img = fs.readFileSync(unminted[i].img_path);
             unminted_imgs.push({image: img, imgid: unminted[i].imgid});
         }
@@ -50,7 +40,6 @@ export const unminted = async (req, res) => {
 
 export const transactions = async (req, res) => {
     try {
-        console.log("------------Call /users/transactions------------");
         const { userid } = req.body;
 
         // search transaction in db by userid
@@ -67,7 +56,7 @@ export const transactions = async (req, res) => {
                 const dataurl = "https://ipfs.io/ipfs/" + tx.image_uri.split("ipfs://")[1];
 
                 const img = fs.readFileSync(t2image.img_path);
-                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txid, dataurl: dataurl});
+                minted_imgs.push({image: img, imgid: tx.imgid, txid: tx.txhash, dataurl: dataurl});
             }
         });
 
