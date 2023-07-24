@@ -80,10 +80,10 @@
         'userid': store.state.userid,
         'prompt': data.formGeneration.prompt
       }, {
-    headers: {
-      'Authorization': store.state.token
-    }
-  })
+        headers: {
+          'Authorization': store.state.token
+        }
+      })
       .then(res => {
           // console.log(res)
           console.log(res.data.data.image.data)

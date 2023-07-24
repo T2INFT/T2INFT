@@ -117,8 +117,6 @@ const loginRules = ref({
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 });
 function loginSubmit() {
-    // privateKeyAlert(sha256(loginForm.value.password).toString())
-    // saveAsTxtFile(sha256(loginForm.value.password).toString(), 'privateKey.txt')
     axios.post(store.state.url+'/auth/login', {
         'email': loginForm.value.email,
         'password': sha256(loginForm.value.password).toString()
@@ -138,7 +136,6 @@ function loginSubmit() {
     .catch( error => {
         console.error(error)
     })
-    // console.log()
 }
 
 function signupSubmit() {
