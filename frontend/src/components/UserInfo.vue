@@ -6,12 +6,32 @@
   </template>
   
   <script setup>
-  const tableData = [
+  import { ref, onMounted, reactive } from "vue";
+  import { useStore } from 'vuex';
+import axios from 'axios';
+
+const tableData = ref([
     {
       email: 'test@gmail.com',
       wallet_address: 'Public Key'
     }
-  ];
+  ]);
+const store = useStore()
+  onMounted(() => {
+    axios.post(store.state.url+'/users/profile', {
+      'userid': store.state.userid,
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        console.log(res.data.data)
+        tableData.value[0].email = res.data.data.email
+        tableData.value[0].wallet_address = res.data.data.wallet
+    })
+});
+
   </script>
 
 <style>

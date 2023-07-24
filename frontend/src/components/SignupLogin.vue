@@ -80,7 +80,8 @@ import axios from 'axios';
 // import VueCookies from 'vue-cookies';
 import { useStore } from 'vuex';
 import sha256 from 'crypto-js/sha256';
-import aes from "crypto-js/aes";
+import { Msgbox } from 'element3';
+// import aes from "crypto-js/aes";
 const store = useStore()
 // var SHA256 = require("crypto-js/sha256");
 const containerRef = ref(null)
@@ -116,8 +117,25 @@ const loginRules = ref({
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 });
 function loginSubmit() {
-    if (localStorage.getItem('token') != null)
-    axios.post('http://10.68.40.185:4000/auth/register', registerForm.value)
+    axios.post(store.state.url+'/auth/login', {
+        'email': loginForm.value.email,
+        'password': sha256(loginForm.value.password).toString()
+    })
+    .then(res => {
+        console.log('login...')
+        localStorage.setItem('token', res.data.data.token)
+        localStorage.setItem('userid', res.data.data.userid)
+
+        store.state.logState = true
+        store.state.token = res.data.data.token
+        store.state.userid = res.data.data.userid
+
+        emit('update:loginVisible', false);
+        emit('update:signupVisible', false)
+    })
+    .catch( error => {
+        console.error(error)
+    })
 }
 
 function signupSubmit() {
@@ -127,16 +145,17 @@ function signupSubmit() {
     // console.log(sha256('aabb').toString())
     // console.log(localStorage.getItem('token')==null)
     // console.log(aes.encrypt('my message', 'secret key 123').toString())
-    axios.post('http://10.68.119.45:4000/auth/register', registerForm.value)
+    axios.post(store.state.url+'/auth/register', {
+        "email": registerForm.value.email,
+        "password": sha256(registerForm.value.password).toString()
+    })
     .then(res => {
+        console.log('signup...')
         console.log('login success:', res.data);
-        console.log(typeof(res.data.token))
-        console.log(res.data.userid)
-        console.log(res.data.data)
         // 登录成功，跳转到首页或其他页面
         localStorage.setItem('token', res.data.data.token)
         localStorage.setItem('userid', res.data.data.userid)
-        localStorage.setItem('userInfo', res.data.data)
+        console.log(res.data.data.wallet)
 
         store.state.logState = true
         store.state.token = res.data.data.token
@@ -147,7 +166,16 @@ function signupSubmit() {
         // console.log(VueCookies.userInfo)
         // this.$router.push('/home');
         emit('update:loginVisible', false);
-        emit('update:signupVisible', false)
+        emit('update:signupVisible', false);
+        privateKeyAlert(res.data.data.wallet.privateKey)
+        saveAsTxtFile(res.data.data.wallet.privateKey, 'privateKey.txt')
+    })
+    .catch( error => {
+        console.error(error)
+    })
+    .then(()=>{
+        console.log('signup...')
+        
     })
     // .catch(error => {
     //     console.log('login failed:', error);
@@ -174,17 +202,25 @@ function signupSubmit() {
     // }
     // });
 }
-function createComponent() {
-  // 定义组件
-  const DynamicComponent = defineComponent({
-    template: `<el-dialog><p>Wallet: ${wallet} <p/><p>privatekey: ${privatekey}</p></el-dialog>`
-  })
-
-  // 创建 vnode
-  const vnode = createVNode(DynamicComponent)
-
-  // 渲染 vnode
-  render(vnode, containerRef.value)
+function saveAsTxtFile(data, filename) {
+  const blob = new Blob([data], { type: 'text/plain' })
+  const url = URL.createObjectURL(blob)
+  
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+function privateKeyAlert(privateKey) {
+    Msgbox.alert(`<p style="color: red;font-weight: bold;">Remember your private key, you only have one chance!!!</p><p style="word-wrap:break-word;">${privateKey}</p>`,
+    'Successful',
+    {
+        confirmButtonText: 'I remembered',
+        dangerouslyUseHTMLString: true
+    })
 }
 </script>
 
