@@ -44,6 +44,7 @@
   import { reactive, toRefs, ref } from 'vue'
   import { useStore } from 'vuex';
   import axios from 'axios';
+import { Message } from 'element3';
   
   
   const store = useStore()
@@ -86,7 +87,7 @@
       })
       .then(res => {
           // console.log(res)
-          console.log(res.data.data.image.data)
+          // console.log(res.data.data.image.data)
           const uint8data = new Uint8Array(res.data.data.image.data)
           const blob = new Blob([uint8data], { type: 'image/jpeg' })
           // console.log(typeof(blob))
@@ -100,7 +101,18 @@
           store.state.imgdata = blob
           store.state.isRateDisabled = false
           store.state.rateValue = null
+          Message({
+            message: 'Generated success!',
+            type: 'success'
+          })
       })
+      .catch( error => {
+        Message({
+            message: 'Generated failure...',
+            type: 'warning'
+          })
+        console.error(error)
+    })
   }
   
   function transfer() {
@@ -113,29 +125,40 @@
     }
   })
       .then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           const uint8data = new Uint8Array(res.data.data.image.data)
-          console.log(typeof(uint8data))
-          console.log(uint8data)
+          // console.log(typeof(uint8data))
+          // console.log(uint8data)
           
           const blob = new Blob([uint8data], { type: 'image/jpeg' })
           const url = URL.createObjectURL(blob)
           const img = document.querySelector('#t2i')
-          console.log(img)
+          // console.log(img)
           img.src = url
           store.state.imgid  = res.data.data.imgid
           store.state.imgdata = blob
           store.state.isRateDisabled = false
           store.state.rateValue = null
+          Message({
+            message: 'Transferred success!',
+            type: 'success'
+          })
       })
+      .catch( error => {
+        Message({
+            message: 'Transferred failure...',
+            type: 'warning'
+          })
+        console.error(error)
+    })
   }
   
   function onchain() {
-      console.log({
-        'userid': store.state.userid,
-        'privateKey': data.formOnchain.pkey,
-        'imgid': store.state.imgid 
-      })
+      // console.log({
+      //   'userid': store.state.userid,
+      //   'privateKey': data.formOnchain.pkey,
+      //   'imgid': store.state.imgid 
+      // })
       axios.post(store.state.url+'/bc/mint', {
         'userid': store.state.userid,
         'privateKey': data.formOnchain.pkey,
@@ -147,8 +170,19 @@
   })
       .then(res => {
           store.state.datahttp = res.data.data.datahttp
-          console.log(res)
+          Message({
+            message: 'On-chain success!',
+            type: 'success'
+          })
+          // console.log(res)
       })
+      .catch( error => {
+        Message({
+            message: 'On-chain failure...',
+            type: 'warning'
+          })
+        console.error(error)
+    })
   }
   </script>
   <!-- <script>

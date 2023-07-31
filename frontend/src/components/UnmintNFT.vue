@@ -101,7 +101,7 @@ function onchain(imgid,pkey) {
   }
 })
     .then(res => {
-        console.log('on chain successful')
+        // console.log('on chain successful')
     })
 }
   async function writeToCanvas(src) {
@@ -131,7 +131,7 @@ function onchain(imgid,pkey) {
                 [blob.type]: blob,
             })
         ])
-        console.log('success');
+        // console.log('success');
     } catch (e) {
         console.log(e);
     }

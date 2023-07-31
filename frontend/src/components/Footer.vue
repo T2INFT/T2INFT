@@ -36,13 +36,16 @@ import { ref } from 'vue'
 import { useStore } from 'vuex';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
+import { Message } from 'element3';
 
 const store = useStore()
 // const isRateDisabled = ref(false)
 
 // const rateValue = ref(null)
 function rateImg () {
-  console.log(store.state.rateValue)
+  store.state.isRateDisabled = true
+
+  // console.log(store.state.rateValue)
   // const el_rate = document.querySelector('#rate')
   // el_rate.disabled = false
   axios.post(store.state.url+'/model/generate', {
@@ -55,18 +58,35 @@ function rateImg () {
   }
 })
     .then(res => {
-        console.log(res)
-
+        // console.log(res)
+        Message({
+            message: 'Rating success!',
+            type: 'success'
+          })
     })
-  store.state.isRateDisabled = true
+    .catch( error => {
+        Message({
+            message: 'Rating failure...',
+            type: 'warning'
+          })
+        console.error(error)
+    })
 }
 
 function downloadImg() {
   saveAs(store.state.imgdata, 't2inft.jpg');
+  Message({
+            message: 'Download success!',
+            type: 'success'
+          })
 }
 
 function copyUrl() {
   console.log(store.state.datahttp)
   navigator.clipboard.writeText(store.state.datahttp);
+  Message({
+            message: 'Copy success!',
+            type: 'success'
+          })
 }
 </script>

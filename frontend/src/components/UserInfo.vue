@@ -10,6 +10,7 @@
   import { useStore } from 'vuex';
 import axios from 'axios';
 
+
 const tableData = ref([
     {
       email: 'test@gmail.com',
@@ -26,7 +27,7 @@ const store = useStore()
   }
 })
     .then(res => {
-        console.log(res.data.data)
+        // console.log(res.data.data)
         tableData.value[0].email = res.data.data.email
         tableData.value[0].wallet_address = res.data.data.wallet
     })

@@ -7,14 +7,14 @@
       <!-- <el-image src="../assets/logo.svg" :fit="fit"></el-image> -->
       <!-- t2inft -->
     </el-col>
-    <el-col :span="2" :offset="19">
+    <!-- <el-col :span="2" :offset="19">
       <div class="icon-container">
         <el-tooltip content="Go to wallet." placement="bottom" @click="test2">
           <i class="el-icon-wallet custom-icon"></i>
         </el-tooltip>
       </div>
-    </el-col>
-    <el-col :span="1">
+    </el-col> -->
+    <el-col :span="1" :offset="21">
       <!-- <el-popover placement="bottom-end" v-model="visible">
         <div v-if="logState" class="popover">
           <el-link icon="el-icon-food">Profile</el-link>
@@ -31,7 +31,13 @@
       </el-popover> -->
       <el-dropdown  v-if="store.state.logState" trigger="click">
         <div class="avatar-container">
-            <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar>
+            <!-- <el-avatar fit="contain" src="../assets/Avatar.jpg" ></el-avatar>
+             -->
+            <el-avatar el-avatar class="avatar" size="large" fit="fill" icon="el-icon-s-custom" style="background-color: white; color: #303133
+;">
+              <!-- <i class="el-icon-s-custom" ></i> -->
+            </el-avatar>
+
         </div>
         <el-dropdown-menu slot="dropdown" >
         <el-dropdown-item icon="el-icon-food" @click="toProfile">Profile</el-dropdown-item>
@@ -40,7 +46,10 @@
       </el-dropdown>
       <el-dropdown v-else trigger="click">
         <div class="avatar-container">
-            <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar>
+            <!-- <el-avatar el-avatar class="avatar" icon="el-icon-user-solid" ></el-avatar> -->
+            <el-avatar el-avatar class="avatar" size="large" fit="fill" icon="el-icon-s-custom" style="background-color: white; color: #909399;">
+            </el-avatar>
+
         </div>
         <el-dropdown-menu slot="dropdown" >
         <el-dropdown-item icon="el-icon-food" @click="loginVisible=true;">
@@ -85,19 +94,9 @@ function toProfile() {
   router.push('/profile')
 }
 
-
-  function test2() {
-    console.log(localStorage.userid)
-    console.log(typeof(localStorage.userid))
-    // console.log(localStorage.getItem('userInfo')['userid'])
-    // console.log(localStorage.getItem('token'))
-    // console.log(store.state.token)
-
-    
-  }
-  function logout() {
-    store.state.logState = false
-  }
+function logout() {
+  store.state.logState = false
+}
 </script>
 <!-- <script>
   import { ref } from 'vue'
