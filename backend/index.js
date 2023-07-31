@@ -75,7 +75,7 @@ app.post("/users/unminted", checkAuth, usersController.unminted);
 /**
  * get user minted images
  * params: userid
- * return: {success: true, data: [{image, imgid, txid}]}
+ * return: {success: true, data: [{image, imgid, txid, dataurl}]}
  */
 app.post("/users/transactions", checkAuth, usersController.transactions);
 
@@ -104,15 +104,3 @@ app.post("/model/grade", checkAuth, modelController.grade);
  * return: {success: true, data: {txid, tokenId, dataurl, datahttp}}
  */
 app.post("/bc/mint", checkAuth, bcController.mint);
-/**
- * get user balance
- * params: userid
- * return: {success: true, data: {balance}}
- */
-app.get("/bc/getBalance", checkAuth, bcController.getBalance);
-/**
- * get user owned tokens
- * param: userid
- * return: {success: true, data: {[tokenid]]}}
- */
-app.get("/bc/getOwnedTokens", checkAuth, bcController.getOwnedTokens);

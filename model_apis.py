@@ -1,17 +1,23 @@
 from flask import Flask, request, jsonify, send_file
-from diffusers import StableDiffusionPipeline
-import torch
+from flask import CORS
 import sys
 import os
+from diffusers import StableDiffusionPipeline
+import torch
 import base64
 from PIL import Image
 from io import BytesIO
+torch.cuda.set_device(0)
+print(torch.cuda.current_device())
+home = os.getcwd()
+imgdir = os.path.join(home, "inputs")
+if not os.path.exists(imgdir):
+    os.mkdir(imgdir)
 
 import importlib  
 mixer_test = importlib.import_module("stable-diffusion.scripts.mixer-test")
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = "inputs"
 
 def pil_to_b64(input):
     buffer = BytesIO()
@@ -35,19 +41,19 @@ def main_sd():
         userid = request.form.get("userid")
         image = PIPE(prompt).images[0]
         data = {
-            "base64" : pil_to_b64( image["image"].convert( "RGB" ) ),
+            "base64" : pil_to_b64( image.convert( "RGB" ) ),
             "mime_type": "image/png",
             "userid": userid
         }
-    except:
+    except Exception as e:
         return jsonify(isError=True,
-                message="Runtime Error",
+                message=str(e),
                 statusCode=400,
                 data= {}), 400
     return jsonify(isError=False,
                     message="Success",
                     statusCode=200,
-                    data= data), 200
+                    data=data), 200
 
 @app.route("/mixer", methods = ["POST"])
 def main_mixer():
@@ -55,26 +61,26 @@ def main_mixer():
         userid = request.form.get("userid")
         imgid = request.form.get("imgid")
         filename = userid + "_" + imgid + ".png"
-        miximg = request.file["miximg"]
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        miximg = request.file["image"]
+        filepath = os.path.join(imgdir, filename)
         miximg.save(filepath)
         
         image = mixer_test(filepath)
         data = {
-            "base64" : pil_to_b64( image["image"].convert( "RGB" ) ),
+            "base64" : pil_to_b64( image.convert( "RGB" ) ),
             "mime_type": "image/png",
             "userid": userid,
             "imgid": imgid
         }
-    except:
+    except Exception as e:
         return jsonify(isError=True,
-                message="Runtime Error",
+                message=str(e),
                 statusCode=400,
-                data= {}), 400
+                data={}), 400
     return jsonify(isError=False,
                     message="Success",
                     statusCode=200,
-                    data= data), 200
+                    data=data), 200
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8000, host="0.0.0.0")
