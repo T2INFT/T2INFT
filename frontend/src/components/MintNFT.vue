@@ -12,7 +12,7 @@
                     type="primary" 
                     size="mini" 
                     icon="el-icon-copy-document"
-                    @click="copyURL(image.src)">
+                    @click="copyURL(image.dataurl)">
                         URL
                     </el-button>
                     </el-col>
@@ -37,6 +37,7 @@
     import { ref, onMounted, reactive } from "vue";
   import { useStore } from 'vuex';
 import axios from 'axios';
+import { Msgbox, Message } from 'element3';
 const imageList = ref([
 
   ])
@@ -51,12 +52,13 @@ const store = useStore()
 })
     .then(res => {
         var rawList = res.data.data
-        // console.log(rawList)
+        // console.log(rawList[0])
         for (var i=0; i<rawList.length; i++) {
           imageList.value.push({
             src: getUrlFromArray(rawList[i].image.data),
             description: rawList[i].imgid,
             txid: rawList[i].txid,
+            dataurl: rawList[i].dataurl
           })
         }
         // for (var i=0; i<rawList.length; i++) {
@@ -75,7 +77,7 @@ function getUrlFromArray(imageData) {
 
   const copyURL = (src) => {
     navigator.clipboard.writeText(src).then(() => {
-        console.log('success');
+        // console.log('success');
     }).catch((e) => {
         console.error(e);
     })
@@ -108,7 +110,7 @@ function getUrlFromArray(imageData) {
                 [blob.type]: blob,
             })
         ])
-        console.log('success');
+        // console.log('success');
     } catch (e) {
         console.log(e);
     }

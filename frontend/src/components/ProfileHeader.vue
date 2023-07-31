@@ -55,10 +55,12 @@
           <span>Gallery</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1" @click="itemIndex=2.1;console.log(itemIndex)">Minted NFT</el-menu-item>
+          <!-- <el-menu-item index="1-1" @click="itemIndex=2.1;console.log(itemIndex)">Minted NFT</el-menu-item> -->
+          <el-menu-item index="1-1" @click="itemIndex=2.1;">Minted NFT</el-menu-item>
           <template>
           </template>
-          <el-menu-item index="1-2" @click="itemIndex=2.2;console.log(itemIndex)">Unminted NFT</el-menu-item>
+          <!-- <el-menu-item index="1-2" @click="itemIndex=2.2;console.log(itemIndex)">Unminted NFT</el-menu-item> -->
+          <el-menu-item index="1-2" @click="itemIndex=2.2;">Unminted NFT</el-menu-item>
           <template>
           </template>
         </el-menu-item-group>
