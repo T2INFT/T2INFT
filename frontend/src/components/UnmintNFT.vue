@@ -35,11 +35,14 @@
   import { useStore } from 'vuex';
 import axios from 'axios';
 import { Msgbox, Message } from 'element3'
+import app from '@/main'
 const imageList = ref([
 
   ])
 const store = useStore()
   onMounted(() => {
+
+    app.config.globalProperties.$loading.showLoading()
     axios.post(store.state.url+'/users/unminted', {
       'userid': store.state.userid,
     }, {
@@ -60,6 +63,16 @@ const store = useStore()
         //   console.log(typeof(rawList[i].image.data))
         // }
 
+      app.config.globalProperties.$loading.hideLoading()
+
+    })
+    .catch( error => {
+        Message({
+            message: 'Unmint data retrieve failure...',
+            type: 'warning'
+          })
+        console.error(error)
+        app.config.globalProperties.$loading.hideLoading()
     })
 });
 function getUrlFromArray(imageData) {
@@ -131,9 +144,15 @@ function onchain(imgid,pkey) {
                 [blob.type]: blob,
             })
         ])
-        // console.log('success');
+        Message({
+          type: 'success',
+          message: 'Image Copied!'
+        })
     } catch (e) {
-        console.log(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     }
   }
   </script>

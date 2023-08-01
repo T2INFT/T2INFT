@@ -9,6 +9,7 @@
   import { ref, onMounted, reactive } from "vue";
   import { useStore } from 'vuex';
 import axios from 'axios';
+import app from '@/main';
 
 
 const tableData = ref([
@@ -19,6 +20,7 @@ const tableData = ref([
   ]);
 const store = useStore()
   onMounted(() => {
+    app.config.globalProperties.$loading.showLoading()
     axios.post(store.state.url+'/users/profile', {
       'userid': store.state.userid,
     }, {
@@ -30,6 +32,7 @@ const store = useStore()
         // console.log(res.data.data)
         tableData.value[0].email = res.data.data.email
         tableData.value[0].wallet_address = res.data.data.wallet
+        app.config.globalProperties.$loading.hideLoading()
     })
 });
 

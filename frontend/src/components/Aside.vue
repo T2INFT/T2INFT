@@ -45,6 +45,7 @@
   import { useStore } from 'vuex';
   import axios from 'axios';
 import { Message } from 'element3';
+import app from '@/main';
   
   
   const store = useStore()
@@ -77,6 +78,7 @@ import { Message } from 'element3';
       // console.log(store.state.token)
       // console.log(store.state.userid)
       // console.log(data.formGeneration.prompt)
+      app.config.globalProperties.$loading.showLoading()
       axios.post(store.state.url+'/model/generate', {
         'userid': store.state.userid,
         'prompt': data.formGeneration.prompt
@@ -105,6 +107,7 @@ import { Message } from 'element3';
             message: 'Generated success!',
             type: 'success'
           })
+          app.config.globalProperties.$loading.hideLoading()
       })
       .catch( error => {
         Message({
@@ -112,10 +115,12 @@ import { Message } from 'element3';
             type: 'warning'
           })
         console.error(error)
+        app.config.globalProperties.$loading.hideLoading()
     })
   }
   
   function transfer() {
+      app.config.globalProperties.$loading.showLoading()
       axios.post(store.state.url+'/model/mixer', {
         'userid': store.state.userid,
         'imgid': store.state.imgid 
@@ -143,6 +148,7 @@ import { Message } from 'element3';
             message: 'Transferred success!',
             type: 'success'
           })
+          app.config.globalProperties.$loading.hideLoading()
       })
       .catch( error => {
         Message({
@@ -150,6 +156,7 @@ import { Message } from 'element3';
             type: 'warning'
           })
         console.error(error)
+        app.config.globalProperties.$loading.hideLoading()
     })
   }
   
@@ -159,6 +166,7 @@ import { Message } from 'element3';
       //   'privateKey': data.formOnchain.pkey,
       //   'imgid': store.state.imgid 
       // })
+      app.config.globalProperties.$loading.showLoading()
       axios.post(store.state.url+'/bc/mint', {
         'userid': store.state.userid,
         'privateKey': data.formOnchain.pkey,
@@ -175,6 +183,7 @@ import { Message } from 'element3';
             type: 'success'
           })
           // console.log(res)
+          app.config.globalProperties.$loading.hideLoading()
       })
       .catch( error => {
         Message({
@@ -182,6 +191,7 @@ import { Message } from 'element3';
             type: 'warning'
           })
         console.error(error)
+        app.config.globalProperties.$loading.hideLoading()
     })
   }
   </script>
