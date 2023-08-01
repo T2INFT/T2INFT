@@ -7,7 +7,9 @@
             <img src="../assets/logo4.png" alt="title-image" style="width: 35%;">
         </template>
         <template v-if="loginVisible" v-slot:default>
-            <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
+            <!-- <el-form ref="loginForm" :model="loginForm" :rules="loginRules"> -->
+            <el-form :model="loginForm">
+
                 <el-form-item
                 label=""
                 prop="email"
@@ -30,7 +32,9 @@
             </span>
         </template>
         <template v-if="signupVisible" v-slot:default>
-            <el-form ref="registerForm" :model="registerForm" :rules="registerRules">
+            <!-- <el-form ref="registerForm" :model="registerForm" :rules="registerRules"> -->
+            <el-form :model="registerForm">
+
                 <el-form-item
                     label=""
                     prop="email"
@@ -63,7 +67,7 @@
     </el-dialog>
 </template>
 <script setup>
-import { ref, defineComponent, createVNode, render, inject } from 'vue';
+import { ref, onMounted, defineComponent, createVNode, render, inject } from 'vue';
 import axios from 'axios';
 // import VueCookies from 'vue-cookies';
 import { useStore } from 'vuex';
@@ -99,6 +103,7 @@ const loginForm = ref({
     email: '',
     password: '',
 })
+
 var validateConfirmPassword = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('Please enter password again'))
