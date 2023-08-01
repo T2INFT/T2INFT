@@ -12,7 +12,7 @@
                     type="primary" 
                     size="mini" 
                     icon="el-icon-copy-document"
-                    @click="copyURL(image.src)">
+                    @click="copyURL(image.dataurl)">
                         URL
                     </el-button>
                     </el-col>
@@ -34,28 +34,58 @@
 </template>
   
 <script setup>
-  import { ref } from 'vue'
+    import { ref, onMounted, reactive } from "vue";
+  import { useStore } from 'vuex';
+import axios from 'axios';
+import { Msgbox, Message } from 'element3';
+const imageList = ref([
 
-  const imageList = ref([
-    {
-      src: "../src/assets/WechatIMG378.png",
-      description: "NFT 1",
-    },
-    {
-      src: "../src/assets/download.jpeg",
-      description: "NFT 2",
-    },
-    {
-      src: "../src/assets/download (1).jpeg",
-      description: "NFT 3",
-    }
-  ]);
+  ])
+const store = useStore()
+  onMounted(() => {
+    axios.post(store.state.url+'/users/transactions', {
+      'userid': store.state.userid,
+    }, {
+  headers: {
+    'Authorization': store.state.token
+  }
+})
+    .then(res => {
+        var rawList = res.data.data
+        // console.log(rawList[0])
+        for (var i=0; i<rawList.length; i++) {
+          imageList.value.push({
+            src: getUrlFromArray(rawList[i].image.data),
+            description: rawList[i].imgid,
+            txid: rawList[i].txid,
+            dataurl: rawList[i].dataurl
+          })
+        }
+        // for (var i=0; i<rawList.length; i++) {
+        //   console.log(typeof(rawList[i].image.data))
+        // }
+
+    })
+});
+function getUrlFromArray(imageData) {
+  const uint8data = new Uint8Array(imageData)
+  const blob = new Blob([uint8data], { type: 'image/jpeg' })
+  const url = URL.createObjectURL(blob)
+  return url
+}
+
 
   const copyURL = (src) => {
     navigator.clipboard.writeText(src).then(() => {
-        console.log('success');
+      Message({
+          type: 'success',
+          message: 'URL Copied!'
+        })
     }).catch((e) => {
-        console.error(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     })
   }
 
@@ -86,9 +116,15 @@
                 [blob.type]: blob,
             })
         ])
-        console.log('success');
+        Message({
+          type: 'success',
+          message: 'Image Copied!'
+        })
     } catch (e) {
-        console.log(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     }
   }
 </script>
