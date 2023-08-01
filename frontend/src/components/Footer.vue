@@ -48,7 +48,7 @@ function rateImg () {
   // console.log(store.state.rateValue)
   // const el_rate = document.querySelector('#rate')
   // el_rate.disabled = false
-  axios.post(store.state.url+'/model/generate', {
+  axios.post(store.state.url+'/model/grade', {
       'userid': store.state.userid,
       'imgid': store.state.imgid,
       'grade': store.state.rateValue
