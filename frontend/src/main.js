@@ -11,7 +11,9 @@ const store = createStore({
     state() {
         return {
             // url: 'http://10.68.40.185:4000',
-            url: "http://101.32.32.33:7502",
+            // url: "http://101.32.32.33:7502",
+            url: "http://43.136.53.52:7502",
+
             logState: localStorage.token != null,
             token: localStorage.token ? localStorage.token : '',
             userid: localStorage.userid,
