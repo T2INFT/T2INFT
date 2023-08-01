@@ -4,7 +4,6 @@
 
 ## Table of Contents
 * [General Info](#general-information)
-* [Architecture](#architecture)
 * [Models Used](#models-used)
 * [NFT website](#nft-website)
 * [Web framework](#web-framework)
@@ -20,11 +19,6 @@
 - This study aims to work out a practical web application that meets potential NFT buyers' requirements in making their customized NFTs, 
 which uses the Generative model to convert text description to semantically consistent NFT style images. 
 Then the images would be converted into NFT products on Ethereum.
-
-
-## Architecture
-<!-- ![Example screenshot](./img/screenshot.png) -->
-Image to-be-uploaded
 
 
 ## Models Used
@@ -43,7 +37,7 @@ __Backend__ : Nodejs + MySQL
 
 
 ## Project Status
-Project is: _in progress_
+Project is: _Done_
 
 ## Model Installation
 Python version >= 3.7
@@ -77,10 +71,11 @@ python main-mixer.py test_user
 - [x] back-end: mint
 - [x] Model: create usable Python script - Stable Diffusion
 - [x] Model: create usable Python script - image-mixer
-- [ ] Connect front-end and back-end
+- [x] Connect front-end and back-end
+- [x] System testing 
 
 
 ## Acknowledgements
-- This project was inspired by HKU MSc Computer Science
+- This project is inspired by HKU MSc Computer Science Department
 - Thanks to all team members
 

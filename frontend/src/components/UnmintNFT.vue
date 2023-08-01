@@ -131,9 +131,15 @@ function onchain(imgid,pkey) {
                 [blob.type]: blob,
             })
         ])
-        // console.log('success');
+        Message({
+          type: 'success',
+          message: 'Image Copied!'
+        })
     } catch (e) {
-        console.log(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     }
   }
   </script>

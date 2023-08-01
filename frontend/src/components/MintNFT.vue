@@ -77,9 +77,15 @@ function getUrlFromArray(imageData) {
 
   const copyURL = (src) => {
     navigator.clipboard.writeText(src).then(() => {
-        // console.log('success');
+      Message({
+          type: 'success',
+          message: 'URL Copied!'
+        })
     }).catch((e) => {
-        console.error(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     })
   }
 
@@ -110,9 +116,15 @@ function getUrlFromArray(imageData) {
                 [blob.type]: blob,
             })
         ])
-        // console.log('success');
+        Message({
+          type: 'success',
+          message: 'Image Copied!'
+        })
     } catch (e) {
-        console.log(e);
+      Message({
+          type: 'warning',
+          message: 'Copy Unsuccessful!'
+        })
     }
   }
 </script>
