@@ -6,6 +6,7 @@ import router from './router'
 import 'element3/lib/theme-chalk/index.css'
 import Element3 from 'element3'
 import { createStore } from 'vuex'
+import Loading from "@/components/Loading/loading"
 const app = createApp(App)
 const store = createStore({
     state() {
@@ -26,4 +27,7 @@ const store = createStore({
 app.use(store)
 app.use(router)
 app.use(Element3)
+app.use(Loading)
 app.mount('#app')
+
+export default app
