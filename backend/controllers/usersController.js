@@ -24,14 +24,25 @@ export const unminted = async (req, res) => {
         const { userid } = req.body;
 
         const unminted = await T2Image.findAll({ where: { userid }});
-        
+        const minted_ids = [];
+        await Transaction.findAll({ 
+            where: { userid },
+            raw: true
+        }).then(async result => {
+            for await (const tx of result){
+                if (!tx.imgid) continue;
+                 
+                minted_ids.push(tx.imgid);
+            }
+        });
+        console.log("end finding minted", minted_ids);
         let unminted_imgs = [];
         for (let i = 0; i < unminted.length; i++) {
-            const t = await Transaction.findAll({ where: {imgid: unminted[i].imgid }});
-            if (t.length > 0) continue;
+            if (minted_ids.includes(unminted[i].imgid)) continue;
             let img = fs.readFileSync(unminted[i].img_path);
             unminted_imgs.push({image: img, imgid: unminted[i].imgid});
         }
+        console.log("end finding unminted", unminted_imgs);
         res.status(200).json({ success: true, data: unminted_imgs });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
