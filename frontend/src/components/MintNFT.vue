@@ -38,11 +38,13 @@
   import { useStore } from 'vuex';
 import axios from 'axios';
 import { Msgbox, Message } from 'element3';
+import app from '@/main';
 const imageList = ref([
 
   ])
 const store = useStore()
   onMounted(() => {
+    app.config.globalProperties.$loading.showLoading()
     axios.post(store.state.url+'/users/transactions', {
       'userid': store.state.userid,
     }, {
@@ -64,6 +66,7 @@ const store = useStore()
         // for (var i=0; i<rawList.length; i++) {
         //   console.log(typeof(rawList[i].image.data))
         // }
+        app.config.globalProperties.$loading.hideLoading()
 
     })
 });
