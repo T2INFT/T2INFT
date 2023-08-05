@@ -73,7 +73,7 @@ import axios from 'axios';
 import { useStore } from 'vuex';
 import sha256 from 'crypto-js/sha256';
 import { Msgbox, Message } from 'element3';
-// import aes from "crypto-js/aes";
+import aes from "crypto-js/aes";
 const store = useStore()
 // var SHA256 = require("crypto-js/sha256");
 const containerRef = ref(null)
@@ -148,6 +148,8 @@ function loginSubmit() {
         store.state.logState = true
         store.state.token = res.data.data.token
         store.state.userid = res.data.data.userid
+        // store.state.publicKey = res.data.data.key
+        store.state.publicKey = aes.decrypt(res.data.data.key, sha256(loginForm.value.password).toString())
 
         emit('update:loginVisible', false);
         emit('update:signupVisible', false)
@@ -206,7 +208,7 @@ function signupSubmit() {
         store.state.logState = true
         store.state.token = res.data.data.token
         store.state.userid = res.data.data.userid
-
+        store.state.publicKey = aes.decrypt(res.data.data.key, sha256(registerForm.value.password).toString())
         // VueCookies.set("userInfo",res.data,'7d');
         // createComponent();
         // console.log(VueCookies.userInfo)

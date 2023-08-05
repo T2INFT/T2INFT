@@ -46,8 +46,8 @@
   import axios from 'axios';
 import { Message } from 'element3';
 import app from '@/main';
-  
-  
+import aes from "crypto-js/aes";
+const crypto = require('crypto');
   const store = useStore()
   // const imgid = ref(-1)
   const data = reactive({
@@ -169,7 +169,7 @@ import app from '@/main';
       app.config.globalProperties.$loading.showLoading()
       axios.post(store.state.url+'/bc/mint', {
         'userid': store.state.userid,
-        'privateKey': data.formOnchain.pkey,
+        'privateKey': crypto.publicEncrypt(store.state.publicKey, data.formOnchain.pkey),
         'imgid': store.state.imgid
       }, {
     headers: {

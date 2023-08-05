@@ -36,6 +36,8 @@
 import axios from 'axios';
 import { Msgbox, Message } from 'element3'
 import app from '@/main'
+import aes from "crypto-js/aes";
+const crypto = require('crypto');
 const imageList = ref([
 
   ])
@@ -106,7 +108,7 @@ function onchainBox (imgid){
 function onchain(imgid,pkey) {
     axios.post(store.state.url+'/bc/mint', {
       'userid': store.state.userid,
-      'privateKey': pkey,
+      'privateKey': crypto.publicEncrypt(store.state.publicKey, pkey),
       'imgid': imgid
     }, {
   headers: {

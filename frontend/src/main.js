@@ -23,6 +23,7 @@ const store = createStore({
             rateValue: null,
             datahttp: '',
             imgdata: null,
+            publicKey: '',
         }
     },
     mutations: {
