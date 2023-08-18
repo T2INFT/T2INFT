@@ -52,12 +52,12 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `transactions` (
+  `txid` int NOT NULL AUTO_INCREMENT,
   `txhash` varchar(100) NOT NULL,
   `userid` int NOT NULL,
   `image_uri` varchar(200) NOT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `imgid` int DEFAULT NULL,
-  `txid` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`txid`),
   KEY `userid` (`userid`),
   KEY `imgid` (`imgid`),
@@ -88,6 +88,8 @@ CREATE TABLE `users` (
   `email` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `wallet` varchar(255) DEFAULT NULL,
+  `pub_key` varchar(1000) DEFAULT NULL,
+  `priv_key` varchar(1000) DEFAULT NULL,
   `reg_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

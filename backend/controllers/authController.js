@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import aes from "crypto-js/aes.js";
+import { generateKeyPairSync } from "crypto";
 
 import config from "../config/config.js";
 import User from "../models/user.js";
@@ -17,6 +19,18 @@ export const register = async (req, res) => {
             username = revisedRandUsername();
         }
 
+        const {publicKey, privateKey} = generateKeyPairSync('rsa', {
+            modulusLength: 256,
+            publicKeyEncoding: {
+                type: 'pkcs1',
+                format: 'pem'
+            },
+            privateKeyEncoding: {
+                type: 'pkcs1',
+                format: 'pem'
+            }
+        });
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -30,6 +44,8 @@ export const register = async (req, res) => {
             username,
             email,
             password: hashedPassword,
+            pub_key: publicKey,
+            priv_key: privateKey,
         });
 
         const payload = { id: newUser.null }; // ?
@@ -39,10 +55,11 @@ export const register = async (req, res) => {
 
         // create wallet
         const wallet = await createWallet(newUser.null);
+        wallet.privateKey = aes(wallet.privateKey, password).toString();
         // auto charge
         const txData = await charge(wallet.address, 20);
 
-        res.status(200).json({ success: true, data: {token: token, userid: newUser.null, wallet: wallet} });
+        res.status(200).json({ success: true, data: {token: token, userid: newUser.null, wallet: wallet, key: publicKey} });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }

@@ -1,5 +1,6 @@
 import { NFTStorage } from "nft.storage";
 import { Web3 } from "web3";
+import crypto from "crypto";
 
 import config from "../config/config.js";
 import User from "../models/user.js";
@@ -60,8 +61,17 @@ export const mint = async (req, res) => {
 		if (!user) {
 			return res.status(400).json({ message: "User not found" });
 		}
+
+		const decrypted = crypto.privateDecrypt(
+			{
+				key: user.priv_key,
+				padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+				oaepHash: "sha256",
+			},
+			Buffer.from(privateKey, "base64")
+		);
 		
-		const me = { address: user.wallet, privateKey: privateKey };
+		const me = { address: user.wallet, privateKey: decrypted.toString() };
 
 		const t2image = await T2Image.findByPk(imgid);
 		if (!t2image) {
@@ -75,19 +85,15 @@ export const mint = async (req, res) => {
 		if (!image) {
 			return res.status(400).json({ message: "Image upload failed" });
 		}
-
 		const metadata = await storage.store({
 			name: user.username + " " + t2image.imgid,
 			description: prompt,
 			image: image
 		});
-
 		if (!metadata || !metadata.url) {
 			return res.status(400).json({ message: "NFT Storage failed" });
 		}
-
 		dataurl = metadata.url;
-
 		// mint
 		const gasPrice = await web3.eth.getGasPrice();
 		var rawTransaction = {
