@@ -13,6 +13,8 @@ const User = sequelize.define("user", {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     wallet: DataTypes.STRING,
+    pub_key: DataTypes.STRING,
+    priv_key: DataTypes.STRING,
     reg_date: DataTypes.DATE,
 });
 

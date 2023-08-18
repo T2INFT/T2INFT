@@ -15,7 +15,10 @@ const root = path.dirname(main()) + "/";
 export const generate = async (req, res) => {
     try {
         const userid = req.body.userid;
-        const prompts = req.body.prompt || "a cat in sushi";
+        const prompts = req.body.prompt;
+        if (!prompts) {
+            return res.status(400).json({ success: false, error: "Prompt cannot be empty" });
+        }
         if (config.mode == 0) {
             const timgpath = root + config.test_imgs.img1;
             const tt2image = await T2Image.create({ userid: userid, img_path: timgpath, promts: prompts });
@@ -24,10 +27,7 @@ export const generate = async (req, res) => {
             res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
         }
         else {
-            // const pdata = {
-            //     prompt: prompts,
-            //     userid: userid
-            // };
+
             const pdata = new URLSearchParams({
                 prompt: prompts,
                 userid: userid
@@ -41,15 +41,6 @@ export const generate = async (req, res) => {
             // save image to local
             const imgpath = saveB64toFile(root + config.img_save_path + userid, Date.now() + ".png", imgbuffer);
             console.log(imgpath);
-            // call python script---------------------------------------------------------
-            // let options = {
-            //     mode: 'text',
-            //     args: ["[" + prompts + "]", userid]
-            // };
-            // const pyresult = await PythonShell.run(root + config.models.main_sd, options);
-
-            // const imgpath = pyresult[-1];
-
 
             // get imgid then save to db
             const t2image = await T2Image.create({ userid: userid, img_path: imgpath, promts: prompts });
@@ -86,12 +77,9 @@ export const mixer = async (req, res) => {
             res.status(200).json({ success: true, data: {image: timg, imgid: ttimgid} });
         }
         else {
-            // const pdata = {
-            //     userid: userid,
-            //     imgid: prev_imgid
-            // };
             const image = fs.createReadStream(previmg.img_path);
             // console.log(image);
+            
             const pdata = new FormData();
             pdata.append("userid", userid);
             pdata.append("imgid", prev_imgid);
@@ -114,17 +102,6 @@ export const mixer = async (req, res) => {
             const imgpath = saveB64toFile(root + config.img_save_path + userid, Date.now() + ".png", imgbuffer);
             console.log(imgpath);
 
-            // call python script---------------------------------------------------------
-            // let options = {
-            //     mode: 'text',
-            //     args: [userid]
-            // };
-            // const pyresult = await PythonShell.run(root + config.models.main_mixer, options);
-
-            // const imgpath = pyresult[-1];
-
-            // get imgid then save to db
-            
             const promts = previmg.prompts;
             const t2image = await T2Image.create({ userid: userid, img_path: imgpath, promts: promts });
             const imgid = t2image.null; // ?
